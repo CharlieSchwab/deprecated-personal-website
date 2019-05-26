@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/createTag', 'ViewController@showCreateTagPage');
+Route::post('/createTag', 'WebController@createTag');
