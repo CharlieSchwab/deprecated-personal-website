@@ -10,10 +10,15 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+\
+Auth::routes(['register' => false]);
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::get('/createTag', 'ViewController@showCreateTagPage');
 Route::post('/createTag', 'WebController@createTag');
+
+
+Route::get('/home', 'HomeController@index')->name('home');
