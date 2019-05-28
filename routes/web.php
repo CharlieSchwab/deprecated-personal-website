@@ -14,7 +14,7 @@
 Auth::routes(['register' => false]);
 
 Route::get('/', function () {
-    return view('auth.login');
+    return view('home');
 });
 
 Route::get('/createTag', 'ViewController@showCreateTagPage');
