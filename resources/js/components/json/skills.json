@@ -1,0 +1,52 @@
+{
+    "data": [
+        {
+            "name": "VueJS",
+            "image": "vue_logo.png"
+        },
+        {
+            "name": "ReactJS",
+            "image": "react_logo.png"
+        },
+        {
+            "name": "AngularJS",
+            "image": "angular_logo.svg"
+        },
+        {
+            "name": "NodeJS",
+            "image": "node_logo.png"
+        },
+        {
+            "name": "SASS preprocessor for CSS",
+            "image": "sass_logo.png"
+        },
+        {
+            "name": "Laravel PHP Framework",
+            "image": "laravel_logo.png"
+        },
+        {
+            "name": "ASP.net Core",
+            "image": "dotnet_logo.png"
+        },
+        {
+            "name": "Python",
+            "image": "python_logo.png"
+        },
+        {
+            "name": "Spring for Java",
+            "image": "spring_logo.png"
+        },
+        {
+            "name": "MongoDB",
+            "image": "mongodb_logo.png"
+        },
+        {
+            "name": "MySQL Database",
+            "image": "mysql_logo.png"
+        },
+        {
+            "name": "Always looking to learn more useful tools and libraries",
+            "image": "plus.png"
+        }
+    ]
+}

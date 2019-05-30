@@ -1,0 +1,28 @@
+{
+    "data": [
+        {
+            "project_name": "Tradepaper.ca",
+            "brief_description": "Enterprise-level web application",
+            "full_description": "Paper-trading website that allows users to register/login, and mock the act of exchanging stocks/tracking their portfolio. Uses a free api to retreive market data",
+            "skills_used": [
+                "ASP.Net Core", "MongoDB", "React Native"
+            ]
+        },
+        {
+            "project_name": "WebGL Online Game",
+            "brief_description": "Multiplayer game designed for fast performance",
+            "full_description": "A game hosted on a Python website (Tornado framework), allows multiple users to play from different machines. Renders 3d models and animations using WebGL",
+            "skills_used": [
+                "Python", "Nginx", "WebGL"
+            ]
+        },
+        {
+            "project_name": "Analytics Website",
+            "brief_description": "Javascript SPA used to display analytics data",
+            "full_description": "A single page application made of Angular components. Displays charts of data collected from my websites. Uses DCjs to render charts that can be filtered",
+            "skills_used": [
+                "Angular", "NodeJS", "DC.js"
+            ]
+        }
+    ]
+}

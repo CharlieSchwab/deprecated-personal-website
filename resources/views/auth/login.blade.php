@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
-@section('content')
+@section('page-title')
+    <title>Udip Patel - Personal Website - Login</title>
+@stop
+
+@section('body')
+<br><br>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -70,4 +75,6 @@
         </div>
     </div>
 </div>
-@endsection
+@stop
+
+
