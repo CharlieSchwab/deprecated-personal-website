@@ -5,10 +5,10 @@ This is a personal website to show my projects.
 Uses simple CRUD operations to showcase "projects" and link them with "tags" (ex. language/framework/etc)
 
 
-###Backend: 
+### Backend: 
 Laravel, Mysql, Apache Server
 
-###Frontend: 
+### Frontend: 
 VueJS
 
 
