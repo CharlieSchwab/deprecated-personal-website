@@ -1,5 +1,6 @@
 <?php
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,12 +14,11 @@
 \
 Auth::routes(['register' => false]);
 
-Route::get('/', function () {
-    return view('home');
+Route::get('/', 'ViewController@showHomePage');
+
+Route::middleware(['auth'])->group(function(){
+    Route::get('/dashboard', 'HomeController@showAdminDashboard');
+    Route::get('/logout', 'Auth\LoginController@logout');
 });
 
-Route::get('/createTag', 'ViewController@showCreateTagPage');
-Route::post('/createTag', 'WebController@createTag');
 
-
-Route::get('/home', 'HomeController@index')->name('home');

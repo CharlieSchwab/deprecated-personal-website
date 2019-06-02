@@ -26,6 +26,10 @@ footer{
     height: 6rem;
 }
 
+.footer-text{
+  font-size: 10px;
+}
+
 .transparent-1{
   @extend %transparent-1;
 }
