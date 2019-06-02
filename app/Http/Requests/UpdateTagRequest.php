@@ -25,6 +25,7 @@ class UpdateTagRequest extends FormRequest
     {
         return [
             'name' => 'required',
+            'type',
             'icon_filepath'
         ];
     }

@@ -17,6 +17,7 @@ class CreateProjectsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('description');
+            $table->string('thumbnail');
             $table->string('url');
             $table->string('github_url');
             $table->boolean('active')->default(true);

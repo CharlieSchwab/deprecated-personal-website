@@ -1,29 +1,28 @@
 @component('layouts.CRUDpanel')
     @slot('modalId')
-        createTagModal
+      createProjectModal
     @endslot
 
     @slot('formID')
-        createTagForm
+      createProjectForm
     @endslot
 
     @slot('CRUDendpoint')
-        /createTag
+      /createProject
     @endslot
 
     @slot('modalTitle')
-        Create New Tag
+      Create New Project
     @endslot
 
     @slot('modalSubmitBtnText')
-        Create Tag
+      Create Project
     @endslot
 
     @slot('modalSubmitBtnID')
-        createTagBtn
+      createProjectBtn
     @endslot
 
-    <!-- form content -->  
-    <tag-form></tag-form>  
-    
+    <!-- form content -->    
+    <project-form></project-form>
 @endcomponent

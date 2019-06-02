@@ -10,4 +10,8 @@ class ViewController extends Controller
         return view('home');
     }
 
+    public function showAllProjects(Request $request){
+        return view('allProjects');
+    }
+
 }

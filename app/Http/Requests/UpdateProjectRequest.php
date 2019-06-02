@@ -26,6 +26,7 @@ class UpdateProjectRequest extends FormRequest
         return [
             'name' => 'required',
             'description' => 'required',
+            'thumbnail',
             'url',
             'github_url',
             'tags' => 'required'

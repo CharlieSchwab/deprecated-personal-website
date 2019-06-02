@@ -15,10 +15,13 @@
 Auth::routes(['register' => false]);
 
 Route::get('/', 'ViewController@showHomePage');
+Route::get('/all-projects', 'ViewController@showAllProjects');
 
 Route::middleware(['auth'])->group(function(){
-    Route::get('/dashboard', 'HomeController@showAdminDashboard');
+    Route::get('/dashboard', 'WebController@showAdminDashboard');
     Route::get('/logout', 'Auth\LoginController@logout');
+
+    Route::post('/createTag', 'WebController@createTag');
 });
 
 

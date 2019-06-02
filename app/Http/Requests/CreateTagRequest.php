@@ -25,7 +25,8 @@ class CreateTagRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'icon_filepath'
+            'type',
+            'icon'
         ];
     }
 }

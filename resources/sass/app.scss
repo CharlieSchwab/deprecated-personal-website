@@ -7,6 +7,10 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+.pointer{
+  cursor: pointer;
+}
+
 .separation-line{
     height: 1.8rem;
 }
@@ -53,6 +57,10 @@ footer{
   margin-right: 10px;
 }
 
+.padded{
+  padding: 10px;
+}
+
 .padded-from-top{
   padding-top: 0.75em;
 }
@@ -75,7 +83,7 @@ footer{
 
 
 .white-text{
-  color: $white;
+  color: $white !important;
 }
 
 .no-margins{

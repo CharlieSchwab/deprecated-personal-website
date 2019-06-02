@@ -18,7 +18,7 @@
 
 <script>
   //static files can be imported in the component
-  import json from "./json/skills.json";
+  import json from "../json/skills.json";
   export default {
     data() {
       return {

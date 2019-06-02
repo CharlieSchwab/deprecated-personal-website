@@ -45,11 +45,12 @@
   .skills-for-project {
     font-size: 16px !important;
     color: #505050;
+    cursor:pointer;
   }
 </style>
 
 <script>
-    import projects_json from './json/portfolio.json';
+    import projects_json from '../json/portfolio.json';
     export default{
         data(){
             //preprocess the full description to split into lines (separate by commas and periods)
