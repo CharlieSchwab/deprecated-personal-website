@@ -46,6 +46,7 @@ window.onload = function () {
     }
     else if (currentPage == DASHBOARD) {
 
+        var CRUDPanel = require('./components/CRUD/CRUDPanel.vue').default;
         var tagForm = require('./components/CRUD/TagForm.vue').default;
         var projectForm = require('./components/CRUD/ProjectForm.vue').default;
 
@@ -53,10 +54,8 @@ window.onload = function () {
             el: '#app',
             components: {
                 'tag-form': tagForm,
-                'project-form': projectForm
-            },
-            data: {
-
+                'project-form': projectForm,
+                'crud-panel': CRUDPanel
             }
         });
     }
