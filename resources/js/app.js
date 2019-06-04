@@ -25,7 +25,7 @@ window.onload = function () {
     var currentPage = window.location.pathname;
     var app;
 
-    //initialize vue app with specific components, based on the current page
+    //DID NOT WANT TO USE VUE ROUTER, so settled for simple if-stmts to load specific components for specific pages
     if (currentPage == HOMEPAGE) {
 
         var heroUnit = require('./components/HomePage/HeroUnit.vue').default;
@@ -47,14 +47,10 @@ window.onload = function () {
     else if (currentPage == DASHBOARD) {
 
         var CRUDPanel = require('./components/CRUD/CRUDPanel.vue').default;
-        var tagForm = require('./components/CRUD/TagForm.vue').default;
-        var projectForm = require('./components/CRUD/ProjectForm.vue').default;
 
         app = new Vue({
             el: '#app',
             components: {
-                'tag-form': tagForm,
-                'project-form': projectForm,
                 'crud-panel': CRUDPanel
             }
         });

@@ -12,14 +12,17 @@
               <h4 class="modal-title white-text">
                 <b>{{ modalTitle }}</b>
               </h4>
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <!-- close modal button -->
+              <button v-on:click="closeCRUDModal()" type="button" class="close">&times;</button>
             </div>
 
             <!-- Modal body-->
             <div class="modal-body">
 
-              <!-- form content -->
-              
+              <!-- form content, cased in sub-components -->
+              <project-form v-if="showProjectForm"></project-form>
+              <tag-form v-if="showTagForm"></tag-form>
+
             </div>
 
             <!-- Modal footer -->
@@ -60,38 +63,68 @@
 </template>
 
 <script>
-  export default {
-    data() {
+  import projectForm from './ProjectForm.vue';
+  import tagForm from './TagForm.vue';
 
+  export default {
+    components: {
+      'tag-form': tagForm,
+      'project-form': projectForm,
+    },
+
+    data() {
       return {
+        //text data for CRUD Modal
         CRUD_MODAL_ID: "#CRUDModal",
         modalTitle: "",
         formID: "",
-        formType: "",
         modalSubmitBtnID: "",
         modalSubmitBtnText: "",
+        
+        //simple display controllers to show/hide sub-components
+        showProjectForm: false,
+        showTagForm: false
       }
     },
 
     methods: {
-      showCreateProjectModal(){
-        this.modalTitle = "Create New Project";
-        this.formID = "createProjectForm";
-        this.formType = "projectForm";// will be used to load ProjectForm.vue
-        this.modalSubmitBtnID = "createProjectBtn";
-        this.modalSubmitBtnText = "Create Project";
+      setCRUDModalText(modalTitle, formID, modalSubmitBtnID, modalSubmitBtnText){
+        this.modalTitle = modalTitle;
+        this.formID = formID;
+        this.modalSubmitBtnID = modalSubmitBtnID;
+        this.modalSubmitBtnText = modalSubmitBtnText;
+      },
 
+      showCreateProjectModal(){
+        this.setCRUDModalText(
+          "Create New Project",
+          "createProjectForm",
+          "createProjectBtn",
+          "Create Project"
+        );
+
+        this.showProjectForm = true;
         $(this.CRUD_MODAL_ID).modal();
       },
 
       showCreateTagModal(){
-        this.modalTitle = "Create New Tag";
-        this.formID = "createTagForm";
-        this.formType = "tagForm";// will be used to load ProjectForm.vue
-        this.modalSubmitBtnID = "createTagBtn";
-        this.modalSubmitBtnText = "Create Tag";
+        this.setCRUDModalText(
+          "Create New Tag",
+          "createTagForm",
+          "createTagBtn",
+          "Create Tag"
+        );
 
+        this.showTagForm = true;
         $(this.CRUD_MODAL_ID).modal();
+      },
+
+      closeCRUDModal(){
+        $(this.CRUD_MODAL_ID).modal('toggle');
+
+        this.setCRUDModalText("", "", "", "");
+        this.showProjectForm = false;
+        this.showTagForm = false;
       }
     }
 
