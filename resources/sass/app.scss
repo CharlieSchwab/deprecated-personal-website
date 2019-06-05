@@ -81,6 +81,22 @@ footer{
   background-color: $secondary-theme;
 }
 
+.main-btn{
+  background-color: $main-theme;
+  color: white !important;
+}
+.main-btn:hover{
+  background-color: $secondary-theme;
+}
+
+.secondary-btn{
+  background-color: $secondary-theme;
+  color: white !important;
+}
+.secondary-btn:hover{
+  background-color: $main-theme;
+}
+
 
 .white-text{
   color: $white !important;

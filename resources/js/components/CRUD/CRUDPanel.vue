@@ -3,32 +3,31 @@
   <div id="CRUDPanel">
 
     <!-- CRUD Modal -->
-    <div class="modal fade" id="CRUDModal">
+    <div id="CRUDModal" class="modal" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog">
         <div class="modal-content">
           <form :id="formID">
             <!-- Modal Header -->
-            <div class="modal-header main-bg">
-              <h4 class="modal-title white-text">
+            <div class="modal-header alt-bg">
+              <h4 class="modal-title">
                 <b>{{ modalTitle }}</b>
               </h4>
               <!-- close modal button -->
-              <button v-on:click="closeCRUDModal()" type="button" class="close">&times;</button>
+              <button v-on:click="closeCRUDModal()" type="button" class="close"><i class='fa fa-times-circle'></i></button>
             </div>
 
             <!-- Modal body-->
             <div class="modal-body">
 
               <!-- form content, cased in sub-components -->
-              <project-form v-if="showProjectForm"></project-form>
-              <tag-form v-if="showTagForm"></tag-form>
+              <component v-bind:is="currentModalForm" ref="CRUDForm"></component> 
 
             </div>
 
             <!-- Modal footer -->
             <div class="modal-footer alt-bg">
-              <a :id="modalSubmitBtnID" class="btn btn-secondary btn-lg white-text pointer">{{ modalSubmitBtnText }}</a>
-              <button type="button" class="btn btn-outline-dark btn-lg" data-dismiss="modal">Close</button>
+              <a v-on:click="submitCRUDOperation()" class="btn btn-lg main-btn pointer">{{ modalSubmitBtnText }}</a>
+              <button v-on:click="closeCRUDModal()" type="button" class="btn btn-outline-dark btn-lg">Close</button>
             </div>
           </form>
         </div>
@@ -42,7 +41,7 @@
         <div class='card-body'>
           <h2 class='text-center'>Projects</h2>
           <hr>
-          <button v-on:click="showCreateProjectModal" type="button" class="btn secondary-bg white-text float-right">
+          <button v-on:click="showCreateProjectModal()" type="button" class="btn btn-lg main-btn float-right">
             <b><i class='fa fa-plus-circle'></i> Create New Project</b>
           </button>
         </div>
@@ -51,7 +50,7 @@
         <div class='card-body'>
           <h2 class='text-center'>Tags</h2>
           <hr>
-          <button v-on:click="showCreateTagModal" type="button" class="btn secondary-bg white-text float-right">
+          <button v-on:click="showCreateTagModal()" type="button" class="btn btn-lg main-btn float-right">
             <b><i class='fa fa-plus-circle'></i> Create New Tag</b>
           </button>
         </div>
@@ -63,8 +62,10 @@
 </template>
 
 <script>
-  import projectForm from './ProjectForm.vue';
-  import tagForm from './TagForm.vue';
+  const CRUD_MODAL_ID = "#CRUDModal", PROJECT_FORM = "project-form", TAG_FORM = "tag-form";
+
+  var projectForm = require('./ProjectForm').default;
+  var tagForm = require('./TagForm.vue').default;
 
   export default {
     components: {
@@ -74,16 +75,13 @@
 
     data() {
       return {
-        //text data for CRUD Modal
-        CRUD_MODAL_ID: "#CRUDModal",
         modalTitle: "",
         formID: "",
         modalSubmitBtnID: "",
         modalSubmitBtnText: "",
         
-        //simple display controllers to show/hide sub-components
-        showProjectForm: false,
-        showTagForm: false
+        //display contoller, shows different Vue components based on type of form to display
+        currentModalForm: ""
       }
     },
 
@@ -103,8 +101,8 @@
           "Create Project"
         );
 
-        this.showProjectForm = true;
-        $(this.CRUD_MODAL_ID).modal();
+        this.currentModalForm = PROJECT_FORM;
+        $(CRUD_MODAL_ID).modal();
       },
 
       showCreateTagModal(){
@@ -115,16 +113,26 @@
           "Create Tag"
         );
 
-        this.showTagForm = true;
-        $(this.CRUD_MODAL_ID).modal();
+        this.currentModalForm = TAG_FORM;
+        $(CRUD_MODAL_ID).modal();
+      },
+
+
+
+      submitCRUDOperation(){
+        //grab form element ID, serialize its content and submit to whichever endpoint is set
+
+        // or retreive data from form component, and call UTIL function to submit a ajax request and return 
+        // back with 200 or else (specific errors)
+        var formData = this.$refs.CRUDForm.getFormData();
+        console.log(formData);
       },
 
       closeCRUDModal(){
-        $(this.CRUD_MODAL_ID).modal('toggle');
+        $(CRUD_MODAL_ID).modal('toggle');
 
         this.setCRUDModalText("", "", "", "");
-        this.showProjectForm = false;
-        this.showTagForm = false;
+        this.currentModalForm = "";
       }
     }
 

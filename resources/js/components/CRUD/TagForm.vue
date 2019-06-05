@@ -6,16 +6,15 @@
             </label>
 
             <div class="col-md-6">
-                <input type="text" class="form-control" name="name" required autofocus>
+                <input v-model="tag.name" type="text" class="form-control" name="name" required autofocus>
             </div>
         </div>
-
         <div class='form-group row'>
             <label for='type' class='col-md-4 col-form-label text-md-right'>
                 <b class='alt-bg padded'>Tag Type</b>
             </label>
             <div class='col-md-6'>
-                <input type="text" class="form-control" name="type"/>
+                <input v-model="tag.type" type="text" class="form-control" name="type"/>
             </div>
         </div>
         <div class="form-group row">
@@ -32,13 +31,26 @@
 </template>
 
 <script>
-    $(document).ready(function(){
-        $('#createTagBtn').click(function(){
-            $.post("/createTag", $('#createTagForm').serialize())
-            .done(function(data){
-                console.log(data);
-            });
-        });
-    });
+    export default{
+        data() {
+            return {
+                tag: {
+                    name: "",
+                    type: "",
+                    show_on_homepage: false,
+                    icon_filepath: ""
+                }
+            }
+        },
 
+        methods: {
+            getFormData(){
+                return this.getVueObject(this.tag);
+            },
+
+            getVueObject(data){
+                return JSON.parse(JSON.stringify(data));
+            }
+        }
+    }
 </script>

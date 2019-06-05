@@ -17,6 +17,7 @@ class CreateTagsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('type');
+            $table->boolean('show_on_homepage');
             $table->string('icon_filepath');
             $table->timestamps();
         });
