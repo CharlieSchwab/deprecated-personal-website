@@ -137,7 +137,6 @@
         // or retreive data from form component, and call UTIL function to submit a ajax request and return 
         // back with 200 or else (specific errors)
         var formData = this.$refs.CRUDForm;
-        console.log(formData);
         formData.setFormData('test');
       },
 

@@ -25,8 +25,7 @@ class CreateTagRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'type',
-            'icon'
+            'type'
         ];
     }
 }

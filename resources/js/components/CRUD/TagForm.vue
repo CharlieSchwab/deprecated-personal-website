@@ -21,17 +21,13 @@
             <label for="icon" class="col-md-4 col-form-label text-md-right">
                 <b class='alt-bg padded'>Tag Icon</b>
             </label>
-
-            <div class="col-md-6">
-                <input id="icon" type="file" class="form-control" name="icon">
-            </div>
+            <br>
+            <file-upload-element ref="fileUploadElement" fileInputElementName="icon" maxPreviewSize="300"></file-upload-element>
         </div>
-        <br>
-        <div class="form-group row">
-            <div class=''
-            <label for="showOnHomepage" class='col-md-12 text-center'>
+        <div class="form-group row no-margins">
+            <label for="showOnHomepage" class='col-md-12 text-center alt-bg'>
                 <input id="showOnHomepage" type="checkbox" v-model="tag.show_on_homepage">
-                <span class='alt-bg padded'>Show this Tag on the Home page?</span>
+                <span>Show this Tag on the Home page?</span>
             </label>
         </div>
     </div>
@@ -39,21 +35,29 @@
 </template>
 
 <script>
+    var fileUploadElement = require('./FileUpload.vue').default;
+
     export default{
+        components: {
+            'file-upload-element': fileUploadElement
+        },
         data() {
             return {
                 tag: {
                     name: "",
                     type: "",
                     show_on_homepage: false,
-                    icon_filepath: ""
+                    icon: ""
                 }
             }
         },
-
+        components: {
+            fileUploadElement
+        },
         methods: {
             setFormData(data){
                 this.tag.name = "test";
+
             },
 
             getFormData(){
@@ -65,4 +69,4 @@
             }
         }
     }
-</script>
+</script>-

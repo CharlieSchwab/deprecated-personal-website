@@ -21,6 +21,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/dashboard', 'WebController@showAdminDashboard');
     Route::get('/logout', 'Auth\LoginController@logout');
 
+    Route::post('/imageUpload', 'WebController@handleImageUpload');
     Route::post('/createTag', 'WebController@createTag');
 });
 
