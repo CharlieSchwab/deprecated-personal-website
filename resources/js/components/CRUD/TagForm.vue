@@ -26,6 +26,14 @@
                 <input id="icon" type="file" class="form-control" name="icon">
             </div>
         </div>
+        <br>
+        <div class="form-group row">
+            <div class=''
+            <label for="showOnHomepage" class='col-md-12 text-center'>
+                <input id="showOnHomepage" type="checkbox" v-model="tag.show_on_homepage">
+                <span class='alt-bg padded'>Show this Tag on the Home page?</span>
+            </label>
+        </div>
     </div>
 
 </template>
@@ -44,6 +52,10 @@
         },
 
         methods: {
+            setFormData(data){
+                this.tag.name = "test";
+            },
+
             getFormData(){
                 return this.getVueObject(this.tag);
             },

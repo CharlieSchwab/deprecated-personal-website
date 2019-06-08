@@ -3,7 +3,7 @@
   <div id="CRUDPanel">
 
     <!-- CRUD Modal -->
-    <div id="CRUDModal" class="modal" data-backdrop="static" data-keyboard="false">
+    <div id="CRUDModal" class="modal fade" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog">
         <div class="modal-content">
           <form :id="formID">
@@ -105,6 +105,17 @@
         $(CRUD_MODAL_ID).modal();
       },
 
+      showUpdateProjectModal(){
+        this.setCRUDModalText(
+          "Update a Project",
+          "updateProjectForm",
+          "updateProjectBtn",
+          "Update Project"
+        );
+
+        
+      },
+
       showCreateTagModal(){
         this.setCRUDModalText(
           "Create New Tag",
@@ -120,12 +131,14 @@
 
 
       submitCRUDOperation(){
-        //grab form element ID, serialize its content and submit to whichever endpoint is set
+        //grab form element ID, serialize its content and submit to whichever endpoint is set --> GO WITH THIS
 
+        //LEAVE THIS ALONE
         // or retreive data from form component, and call UTIL function to submit a ajax request and return 
         // back with 200 or else (specific errors)
-        var formData = this.$refs.CRUDForm.getFormData();
+        var formData = this.$refs.CRUDForm;
         console.log(formData);
+        formData.setFormData('test');
       },
 
       closeCRUDModal(){
