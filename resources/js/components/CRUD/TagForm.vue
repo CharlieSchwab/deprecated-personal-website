@@ -17,13 +17,7 @@
                 <input v-model="tag.type" type="text" class="form-control" name="type"/>
             </div>
         </div>
-        <div class="form-group row">
-            <label for="icon" class="col-md-4 col-form-label text-md-right">
-                <b class='alt-bg padded'>Tag Icon</b>
-            </label>
-            <br>
-            <file-upload-element ref="fileUploadElement" fileInputElementName="icon" maxPreviewSize="300"></file-upload-element>
-        </div>
+        <image-input ref="imageInput" imageInputLabelText='Tag Icon' imageInputElementName='icon' maxPreviewSize='400'></image-input>
         <div class="form-group row no-margins">
             <label for="showOnHomepage" class='col-md-12 text-center alt-bg'>
                 <input id="showOnHomepage" type="checkbox" v-model="tag.show_on_homepage">
@@ -35,12 +29,9 @@
 </template>
 
 <script>
-    var fileUploadElement = require('./FileUpload.vue').default;
+    var imageInput = require('./ImageUpload.vue').default;
 
     export default{
-        components: {
-            'file-upload-element': fileUploadElement
-        },
         data() {
             return {
                 tag: {
@@ -52,12 +43,13 @@
             }
         },
         components: {
-            fileUploadElement
+            'image-input': imageInput
         },
         methods: {
+            //will be used when loading existing data into form before updating
             setFormData(data){
                 this.tag.name = "test";
-
+                this.tag.type = "";
             },
 
             getFormData(){

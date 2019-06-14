@@ -24,12 +24,8 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
-        "filepond": "^4.4.9",
-        "filepond-plugin-file-validate-type": "^1.2.4",
-        "filepond-plugin-image-preview": "^4.2.1",
         "imagesloaded": "^4.1.4",
         "jquery-tagcanvas": "^2.9.0",
-        "particles.js": "^2.0.0",
-        "vue-filepond": "^5.1.1"
+        "particles.js": "^2.0.0"
     }
 }

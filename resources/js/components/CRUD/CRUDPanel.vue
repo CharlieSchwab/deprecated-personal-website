@@ -6,7 +6,7 @@
     <div id="CRUDModal" class="modal fade" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog">
         <div class="modal-content">
-          <form :id="formID">
+          <form :id="formID" enctype="multipart/form-data">
             <!-- Modal Header -->
             <div class="modal-header alt-bg">
               <h4 class="modal-title">
@@ -131,13 +131,10 @@
 
 
       submitCRUDOperation(){
-        //grab form element ID, serialize its content and submit to whichever endpoint is set --> GO WITH THIS
-
-        //LEAVE THIS ALONE
-        // or retreive data from form component, and call UTIL function to submit a ajax request and return 
-        // back with 200 or else (specific errors)
-        var formData = this.$refs.CRUDForm;
-        formData.setFormData('test');
+        var formData = $("#" + this.formID).serializeArray();
+        console.log(formData);
+        //TODO: need to handle file upload and send via ajax, does not show in formData right now
+        
       },
 
       closeCRUDModal(){

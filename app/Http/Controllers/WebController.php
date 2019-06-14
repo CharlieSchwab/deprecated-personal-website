@@ -11,7 +11,6 @@ use App\ProjectTag;
 
 class WebController extends Controller
 {
-    private static $uploadedImages = [];
     /**
      * Create a new controller instance, NEED to be authorized to use this controller's functions
      *
@@ -27,30 +26,25 @@ class WebController extends Controller
         return view('dashboard');
     }
 
-
-    public function handleImageUpload(Request $request){
+    
+    public function createTag(Requests\CreateTagRequest $request){
+        $tag = new Tag();
+        $tag->name = $request->input('name');
+        $tag->type = $request->input('type');
+        
         if($request->hasFile('icon')){
             $imageFolder = 'public/assets/logos';
 
             $uploadedImage = $request->file('icon');
 
-            //create unique filename, store into imageFolder
+            //create unique filename using current timestamp, store into imageFolder
             $imageName = $uploadedImage->getClientOriginalName();
             $storagePath = explode('.', $imageName)[0] . '-' . strval(time()) . explode('.', $imageName)[1];
             $uploadedImagePath = $uploadedImage->storeAs($imageFolder, $storagePath);
 
-            $uploadedImages[] = Storage::url($uploadedImagePath);//the path stored here should be used as the icon filepath for the next tag that is uploaded
-            return response()->json(['success' => 'true']);
+            $tag->icon_filepath = $uploadedImagePath;
         }
         
-        return response()->json(['success' => 'false']);
-    }
-
-    public function createTag(Requests\CreateTagRequest $request){
-        $tag = new Tag();
-        $tag->name = $request->input('name');
-        $tag->type = $request->input('type');
-        //TODO
         
         //$tag->save();
         
