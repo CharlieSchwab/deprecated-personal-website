@@ -16,9 +16,9 @@ class CreateTagsTable extends Migration
         Schema::create('tags', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('type');
-            $table->boolean('show_on_homepage');
-            $table->string('icon_filepath');
+            $table->string('type')->default('');
+            $table->boolean('show_on_homepage')->default(false);
+            $table->string('icon_filepath')->default('');
             $table->timestamps();
         });
     }

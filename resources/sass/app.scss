@@ -7,6 +7,57 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+
+//Vue transitions
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+.shake-enter-active {
+  animation: shake 0.5s;
+}
+
+@keyframes shake{
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+//SPINNERS
+
+//simple spinner from: https://codepen.io/mandelid/pen/vwKoe
+#loading {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255,255,255,.3);
+  border-radius: 50%;
+  border-top-color: $main-theme;
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+
+
+//USED IN ALL PAGES
 .pointer{
   cursor: pointer;
 }
@@ -32,25 +83,6 @@ footer{
 
 .footer-text{
   font-size: 10px;
-}
-
-.transparent-1{
-  @extend %transparent-1;
-}
-
-.external-site-logo{
-  @extend %pushed-up-1;
-  width:30px;
-  height:20px;
-}
-
-.navbar-logo{
-  width:35px;
-  height:35px;
-}
-.footer-logo{
-  width:50px;
-  height:50px;
 }
 
 .btn-space{
@@ -97,6 +129,14 @@ footer{
   background-color: $main-theme;
 }
 
+.navbar-logo{
+  width:35px;
+  height:35px;
+}
+.footer-logo{
+  width:50px;
+  height:50px;
+}
 
 .white-text{
   color: $white !important;
@@ -117,6 +157,22 @@ footer{
 .spaced-min{
   margin:5px;
 }
+
+
+//cosmetic-css
+
+.transparent-1{
+  @extend %transparent-1;
+}
+
+.external-site-logo{
+  @extend %pushed-up-1;
+  width:30px;
+  height:20px;
+}
+
+
+
 
 
 //HERO-UNIT
@@ -162,39 +218,3 @@ footer{
     padding:10px;
   }
 }
-
-
-  /* simple spinner from https://loading.io/css/
-  */
-  .lds-ripple {
-    display: inline-block;
-    position: relative;
-    width: 64px;
-    height: 64px;
-  }
-  .lds-ripple div {
-    position: absolute;
-    border: 4px solid #fff;
-    opacity: 1;
-    border-radius: 50%;
-    animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
-  }
-  .lds-ripple div:nth-child(2) {
-    animation-delay: -0.5s;
-  }
-  @keyframes lds-ripple {
-    0% {
-      top: 28px;
-      left: 28px;
-      width: 0;
-      height: 0;
-      opacity: 1;
-    }
-    100% {
-      top: -1px;
-      left: -1px;
-      width: 58px;
-      height: 58px;
-      opacity: 0;
-    }
-  }

@@ -20,7 +20,6 @@ const ALLPROJECTS = "/allprojects";
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-
 window.onload = function () {
     var currentPage = window.location.pathname;
     var app;

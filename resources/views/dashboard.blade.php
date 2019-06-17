@@ -10,3 +10,9 @@
     <crud-panel></crud-panel>
 @stop
 
+@section('scripts')
+    <script>
+        //set CSRFToken to be available for all JS scripts using this page
+        window.Laravel = <?php echo json_encode(['csrfToken' => csrf_token()]); ?>
+    </script>
+@stop

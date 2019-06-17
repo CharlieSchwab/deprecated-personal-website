@@ -22,18 +22,20 @@
         },
         data() {
             return {
-                fileUploadError: ""
+                fileUploadError: "",
+                file: "",//stores the uploaded file
             }
         },
         methods: {
+            //handle file input, used to filter file types and handle 'cancel' events
             handleFileUpload(e){
                 //reset any errors
                 this.fileUploadError = "";
 
+                //validate the file
                 var fileArray = e.target.files;
-
                 if(!fileArray.length){
-                    this.fileUploadError = "No file Uploaded"
+                    this.file = "";
                     return;
                 }
 
@@ -44,6 +46,18 @@
                     this.fileUploadError = "Invalid File type (only png/jpg/svg accepted)";
                     return;
                 }
+
+                //set this
+                this.file = imageFile;
+            },
+
+            //simple getters
+            getImageInputElementName(){
+                return this.imageInputElementName;
+            },
+
+            getUploadedFile(){
+                return this.file;
             }
         }
     }

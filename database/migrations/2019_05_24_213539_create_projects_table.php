@@ -17,10 +17,11 @@ class CreateProjectsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('description');
-            $table->string('thumbnail');
-            $table->string('url');
-            $table->string('github_url');
+            $table->string('thumbnail')->default('');
+            $table->string('url')->default('');
+            $table->string('github_url')->default('');
             $table->boolean('active')->default(true);
+            $table->boolean('show_on_homepage')->default(false);
             $table->timestamps();
         });
     }

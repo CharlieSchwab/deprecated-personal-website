@@ -13,15 +13,32 @@
                 <b>{{ modalTitle }}</b>
               </h4>
               <!-- close modal button -->
-              <button v-on:click="closeCRUDModal()" type="button" class="close"><i class='fa fa-times-circle'></i></button>
+              <button v-on:click="closeCRUDModal()" type="button" class="close"><i
+                  class='fa fa-times-circle'></i></button>
             </div>
 
             <!-- Modal body-->
             <div class="modal-body">
 
               <!-- form content, cased in sub-components -->
-              <component v-bind:is="currentModalForm" ref="CRUDForm"></component> 
+              <component v-bind:is="currentModalForm" ref="CRUDForm"></component>
 
+              <!--spinner-->
+              <div id="spinner-container">
+                <div id="loading" class=" d-block mx-auto"></div>
+              </div>
+
+              <!-- error panel, if any errors exist -->
+              <transition name="shake">
+                <div v-if="errorList.length > 0" class="alert alert-danger no-margins mx-auto">
+                  <p class='no-margins'><b>There was a Problem with sending your request:</b></p>
+                  <ul class='no-margins'>
+                    <li v-for="error in errorList">
+                      {{ error.error }}
+                    </li>
+                  </ul>
+                </div>
+              </transition>
             </div>
 
             <!-- Modal footer -->
@@ -35,6 +52,14 @@
     </div>
 
     <!-- CRUD Panel Page -->
+
+    <!--notification bar-->
+    <transition name="fade">
+      <div v-if="notificationMessage != ''" id="notificationMessage" class="alert alert-success no-margins">
+        <p class='text-center no-margins'>{{ notificationMessage }}</p>
+      </div>
+    </transition>
+
     <br><br>
     <div class='d-flex flex-md-row flex-column justify-content-center'>
       <div class='card col-md-5 spaced shadow'>
@@ -58,8 +83,13 @@
     </div>
   </div>
 
-
 </template>
+
+<style>
+  #spinner-container {
+    display: none;
+  }
+</style>
 
 <script>
   const CRUD_MODAL_ID = "#CRUDModal", PROJECT_FORM = "project-form", TAG_FORM = "tag-form";
@@ -79,21 +109,27 @@
         formID: "",
         modalSubmitBtnID: "",
         modalSubmitBtnText: "",
-        
+
         //display contoller, shows different Vue components based on type of form to display
-        currentModalForm: ""
+        currentModalForm: "",
+
+        notificationMessageBackgroundColor: "",
+        notificationMessage: "",
+        errorList: [
+
+        ]
       }
     },
 
     methods: {
-      setCRUDModalText(modalTitle, formID, modalSubmitBtnID, modalSubmitBtnText){
+      setCRUDModalText(modalTitle, formID, modalSubmitBtnID, modalSubmitBtnText) {
         this.modalTitle = modalTitle;
         this.formID = formID;
         this.modalSubmitBtnID = modalSubmitBtnID;
         this.modalSubmitBtnText = modalSubmitBtnText;
       },
 
-      showCreateProjectModal(){
+      showCreateProjectModal() {
         this.setCRUDModalText(
           "Create New Project",
           "createProjectForm",
@@ -105,7 +141,7 @@
         $(CRUD_MODAL_ID).modal();
       },
 
-      showUpdateProjectModal(){
+      showUpdateProjectModal() {
         this.setCRUDModalText(
           "Update a Project",
           "updateProjectForm",
@@ -113,10 +149,10 @@
           "Update Project"
         );
 
-        
+
       },
 
-      showCreateTagModal(){
+      showCreateTagModal() {
         this.setCRUDModalText(
           "Create New Tag",
           "createTagForm",
@@ -128,20 +164,88 @@
         $(CRUD_MODAL_ID).modal();
       },
 
-
-
-      submitCRUDOperation(){
-        var formData = $("#" + this.formID).serializeArray();
-        console.log(formData);
-        //TODO: need to handle file upload and send via ajax, does not show in formData right now
-        
+      resetNotification() {
+        this.notificationMessage = "";
       },
 
-      closeCRUDModal(){
+      closeCRUDModal() {
         $(CRUD_MODAL_ID).modal('toggle');
 
-        this.setCRUDModalText("", "", "", "");
-        this.currentModalForm = "";
+        this.setCRUDModalText("", "", "", "");//reset form modal text
+        this.errorList = []; //reset error list
+        this.currentModalForm = ""; //remove sub-component
+      },
+
+
+
+      // submit the current form (whichever type of form, Create, Update, or Delete)
+      submitCRUDOperation() {
+        this.errorList = [];//reset error(s)
+
+        //load specific form subcomponent, and its formData
+        var form = this.$refs.CRUDForm;
+
+        //validate form, if errors exist, show the errors and exit the function
+        var errorsInForm = form.validateFormData();
+        if (errorsInForm.length > 0) {
+          this.errorList = errorsInForm;
+          return;
+        }
+
+        //load form data into variable
+        var formData = form.getFormData();
+        formData.append("_token", Laravel.csrfToken);//add csrf token
+
+        var request = new XMLHttpRequest();
+        //define event handlers for when request is submitted
+        request.addEventListener('load', this.CRUDOperationResponseReceived);
+        request.addEventListener('error', this.CRUDOperationError);
+
+        //send request to targetURL
+        request.open('POST', form.getTargetURL(), true);
+        request.send(formData);
+
+        $('#spinner-container').show();
+      },
+
+
+      //handler for when a response is received
+      CRUDOperationResponseReceived(event) {
+        $('#spinner-container').hide();
+        var response = event.target;
+
+        //if response code is not 200 -> display error and exit function
+        if (response.status != 200) {
+          this.errorList = [{ error: response.status + ": " + response.statusText }];
+          return;
+        }
+
+        
+        try{
+          var responseData = JSON.parse(response.response)
+        } catch(err){
+          this.errorList = [{ error: "Invalid Response Type"}];
+          return;
+        }
+
+        //if success, then close modal and show notification
+        if (responseData.success) {
+          this.closeCRUDModal();
+
+          this.notificationMessageBackgroundColor = "success";
+          this.notificationMessage = responseData.message;
+
+          //hide notification after 3 seconds
+          setTimeout(this.resetNotification, 3000);
+        }
+        else{
+          this.errorList = [ {error: responseData.message} ];
+        }
+      },
+
+      CRUDOperationError(event) {
+        $('#spinner-container').hide();
+        this.errorList = [{ error: "Could not send request to server. (Might be down)" }];
       }
     }
 
