@@ -1,64 +1,165 @@
 <template>
-    <div id='imageUpload' class='form-group row'>
-        <label for="icon" class="col-md-4 col-form-label text-md-right">
-            <b class='alt-bg padded'>{{ imageInputLabelText }}</b>
+  <div id="imageUpload">
+    <div
+      id="imageUploadContainer"
+      :style="{ 'width': maxPreviewSize + 'px'}"
+    >
+      <!-- show input box if file is empty -->
+      <div id="inputBox" v-if="file == ''">
+        <label id="imageUploadLabel" for="icon" class="text-center">
+          <b>{{ imageInputLabelText }}</b>
         </label>
         <br>
-        <input id='image-input' type='file' :name='imageInputElementName' @change='handleFileUpload'>
-        <br>
-        <div v-if="fileUploadError" class='alert alert-danger mx-auto'>
-            {{ fileUploadError }}
-        </div>
+        <input
+          id="image-input"
+          type="file"
+          :name="imageInputElementName"
+          @change="handleFileUpload"
+        >
+      </div>
+
+      <!-- show image preview if file is not empty -->
+      <div v-else>
+        <img id="imagePreview" src="#" alt="No File">
+      </div>
     </div>
+
+    <!-- reset image file if given -->
+    <div v-if="file != ''"  :style="{ 'width': maxPreviewSize + 'px' }" class="mx-auto">
+      <a @click="resetImageUpload" class="btn btn-dark white-text d-block pointer">Reset Image</a>
+    </div>
+    <!-- if any errors exist, show alert -->
+    <div v-if="fileUploadError" :style="{ 'width': maxPreviewSize + 'px' }" class="mx-auto">
+      <p class="alert alert-danger text-center">{{ fileUploadError }}</p>
+    </div>
+  </div>
 </template>
 
+<style>
+  #imageUploadContainer {
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+    z-index: 5;
+  }
+
+  #inputBox {
+    height: 100px;
+    background: repeating-linear-gradient(
+      45deg,
+      #fcfcfc,
+      #fcfcfc 10px,
+      #f4f4f4 10px,
+      #f4f4f4 20px
+    );
+    border-radius: 20px;
+  }
+
+  #imageUploadLabel {
+    position: absolute;
+    opacity: 0.8;
+    width: 100%;
+    height: 50%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  #image-input {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 10;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  #imagePreview{
+    width: 100%;
+    height: 100%;
+    padding:5px;
+    padding-bottom: 0 !important;
+    border: 1px solid #ddd;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    object-fit: cover;/* auto-sizes the image size */
+
+        background: repeating-linear-gradient(
+      45deg,
+      #fcfcfc,
+      #fcfcfc 10px,
+      #f4f4f4 10px,
+      #f4f4f4 20px
+    );
+  }
+</style>
+
 <script>
-    export default{
-        name: 'imageUpload',
-        props: {
-            imageInputLabelText: String,
-            imageInputElementName: String,
-            maxPreviewSize: String
-        },
-        data() {
-            return {
-                fileUploadError: "",
-                file: "",//stores the uploaded file
-            }
-        },
-        methods: {
-            //handle file input, used to filter file types and handle 'cancel' events
-            handleFileUpload(e){
-                //reset any errors
-                this.fileUploadError = "";
+  export default {
+    name: "imageUpload",
+    props: {
+      imageInputLabelText: String,
+      imageInputElementName: String,
+      maxPreviewSize: String
+    },
+    data() {
+      return {
+        fileUploadError: "",
+        file: "" //stores the uploaded file
+      };
+    },
+    methods: {
+      //simple getters
+      getImageInputElementName() {
+        return this.imageInputElementName;
+      },
 
-                //validate the file
-                var fileArray = e.target.files;
-                if(!fileArray.length){
-                    this.file = "";
-                    return;
-                }
+      getUploadedFile() {
+        return this.file;
+      },
+      
+      //set image src data
+      showUploadedImage(file){
+        var reader = new FileReader();
+        reader.onload = (e) => $('#imagePreview').attr('src', e.target.result);
+        reader.readAsDataURL(file);
+      },
 
-                var imageFile = fileArray[0];
-                if(imageFile.type != "image/png" && imageFile.type != "image/jpeg" && imageFile.type != "image/svg+xml"){
-                    //reset file input
-                    $('#image-input').value = "";
-                    this.fileUploadError = "Invalid File type (only png/jpg/svg accepted)";
-                    return;
-                }
+      //reset uploaded image by resetting input value, component file attribute, and the image tag's src attribute
+      resetImageUpload(){
+        $('#image-input').value = "";
+        this.file = "";
+        $('#imagePreview').attr('src', '');
+      },
 
-                //set this
-                this.file = imageFile;
-            },
+      //handle file input, used to filter file types and handle 'cancel' events
+      handleFileUpload(e) {
+        //reset any errors
+        this.fileUploadError = "";
 
-            //simple getters
-            getImageInputElementName(){
-                return this.imageInputElementName;
-            },
-
-            getUploadedFile(){
-                return this.file;
-            }
+        //validate the file
+        var fileArray = e.target.files;
+        if (!fileArray.length) {
+          this.file = "";
+          return;
         }
+
+        var imageFile = fileArray[0];
+        if (
+          imageFile.type != "image/png" &&
+          imageFile.type != "image/jpeg" &&
+          imageFile.type != "image/svg+xml"
+        ) {
+          //reset file input
+          $("#image-input").value = "";
+          this.fileUploadError = "Error: Only png/jpg/svg accepted";
+          return;
+        }
+
+        //show image preview and set component's data to store the file object
+        this.showUploadedImage(imageFile);
+        this.file = imageFile;
+      },
     }
+  };
 </script>

@@ -2,7 +2,7 @@
     <div id='tag-form'>
         <div class="form-group row">
             <label for="name" class="col-md-4 col-form-label text-md-right">
-                <b class='alt-bg padded'>Tag Name*</b>
+                <b class='alert alt-bg'>Tag Name*</b>
             </label>
 
             <div class="col-md-6">
@@ -11,17 +11,17 @@
         </div>
         <div class='form-group row'>
             <label for='type' class='col-md-4 col-form-label text-md-right'>
-                <b class='alt-bg padded'>Tag Type</b>
+                <b class='alert alt-bg'>Tag Type</b>
             </label>
             <div class='col-md-6'>
                 <input v-model="tag.type" type="text" class="form-control" name="type"/>
             </div>
         </div>
         
-        <image-input ref="imageInput" imageInputLabelText='Tag Icon' imageInputElementName='icon' maxPreviewSize='400'></image-input>
-
+        <image-input ref="imageInput" imageInputLabelText='Upload Tag Icon' imageInputElementName='icon' maxPreviewSize='300'></image-input>
+        <br>
         <div class="form-group row no-margins">
-            <label for="showOnHomepage" class='text-center alert alt-bg mx-auto'>
+            <label for="showOnHomepage" class='text-center alert alt-bg mx-auto no-margins'>
                 <input id="showOnHomepage" type="checkbox" v-model="tag.show_on_homepage">
                 <span>Show this Tag on the Home page?</span>
             </label>
@@ -32,14 +32,17 @@
 
 <script>
     var imageInput = require('./ImageUpload.vue').default;
-    const targetRoute = "/createTag";
+    var targetRoute = "/createTag";
+
 
     export default{
         data() {
             return {
                 tag: {
+                    id: "",
                     name: "",
                     type: "",
+                    icon_filepath: "",
                     show_on_homepage: false
                 },
 
@@ -76,9 +79,11 @@
                 
                 var vueFormData = this.getVueObject(this.tag);//user-input
                 
-                //append user-input into formData
+                //append user-input into formData, if given
                 Object.keys(vueFormData).forEach(function(key){
-                    formData.append(key, vueFormData[key]);
+                    if(vueFormData[key] != ""){
+                        formData.append(key, vueFormData[key]);
+                    } 
                 });
 
                 //add image to formdata using sub-component's functions, if any image was uploaded

@@ -109,15 +109,12 @@
         formID: "",
         modalSubmitBtnID: "",
         modalSubmitBtnText: "",
-
         //display contoller, shows different Vue components based on type of form to display
         currentModalForm: "",
 
         notificationMessageBackgroundColor: "",
         notificationMessage: "",
-        errorList: [
-
-        ]
+        errorList: []
       }
     },
 
@@ -148,8 +145,6 @@
           "updateProjectBtn",
           "Update Project"
         );
-
-
       },
 
       showCreateTagModal() {
@@ -181,7 +176,6 @@
       // submit the current form (whichever type of form, Create, Update, or Delete)
       submitCRUDOperation() {
         this.errorList = [];//reset error(s)
-
         //load specific form subcomponent, and its formData
         var form = this.$refs.CRUDForm;
 
@@ -220,7 +214,6 @@
           return;
         }
 
-        
         try{
           var responseData = JSON.parse(response.response)
         } catch(err){
@@ -231,12 +224,10 @@
         //if success, then close modal and show notification
         if (responseData.success) {
           this.closeCRUDModal();
-
           this.notificationMessageBackgroundColor = "success";
           this.notificationMessage = responseData.message;
-
-          //hide notification after 3 seconds
-          setTimeout(this.resetNotification, 3000);
+          //hide notification after some time
+          setTimeout(this.resetNotification, 5000);
         }
         else{
           this.errorList = [ {error: responseData.message} ];
