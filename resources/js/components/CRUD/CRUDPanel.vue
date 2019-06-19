@@ -106,12 +106,16 @@
 
     data() {
       return {
+        //cosmetic variables for the form's container
         modalTitle: "",
         formID: "",
         modalSubmitBtnID: "",
         modalSubmitBtnText: "",
+
         //display contoller, shows different Vue components based on type of form to display
         currentModalForm: "",
+        //another display controller, determines whether or not data is prefilled for the form component
+        isUpdateOperation: false,
 
         notificationMessageBackgroundColor: "",
         notificationMessage: "",
@@ -168,21 +172,40 @@
           "Update Tag"
         );
 
+        //when this button gets clicked, an event will be fired with it, so take event args and save the data object in view model ...
+
+        //load the form, do not show modal yet, wait for data to be prefilled
+        this.isUpdateOperation = true;
         this.currentModalForm = TAG_FORM;
-        //TODO: figure out a way to set form data in sub-component, even though it is just loaded after this line
-        $(CRUD_MODAL_ID).modal();
       },
 
-      resetNotification() {
-        this.notificationMessage = "";
+
+      //this function will be called by the sub-form when the sub-component is mounted
+      prefillFormData(){
+        if(this.isUpdateOperation){
+          
+          //passing in static JSON data now, but in the future, send json data of selected Data object (either project or tag) to the subcomponent
+          this.$refs.CRUDForm.setFormData(
+            {
+              'id': '1',
+              'name': 'test',
+              'type': 'framework',
+              'icon_filepath': '/assets/logos/logo.png',
+              'show_on_homepage': true
+            }
+          );
+          $(CRUD_MODAL_ID).modal();
+        }
       },
 
       closeCRUDModal() {
         $(CRUD_MODAL_ID).modal('toggle');
 
+        //reset all view-model data to default values
         this.setCRUDModalText("", "", "", "");//reset form modal text
         this.errorList = []; //reset error list
         this.currentModalForm = ""; //remove sub-component
+        this.isUpdateOperation = false;
       },
 
 
@@ -252,7 +275,11 @@
       CRUDOperationError(event) {
         $('#spinner-container').hide();
         this.errorList = [{ error: "Could not send request to server. (Might be down)" }];
-      }
+      },
+
+      resetNotification() {
+        this.notificationMessage = "";
+      },
     }
 
   }

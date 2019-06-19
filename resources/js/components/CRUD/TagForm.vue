@@ -49,6 +49,11 @@
                 targetURL: targetRoute
             }
         },
+
+        mounted: function(){
+            this.$parent.prefillFormData();
+        },
+
         components: {
             'image-input': imageInput
         },

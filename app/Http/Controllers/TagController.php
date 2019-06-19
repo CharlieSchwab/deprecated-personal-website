@@ -13,7 +13,7 @@ class TagController extends Controller
 {
     private static $imageFolder = 'assets/logos';//folder in which images should be stored to
 
-    //needs to be authenticated to use this controller
+    //need to be authenticated to use this controller
     public function __construct()
     {
         $this->middleware('auth');

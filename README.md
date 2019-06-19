@@ -11,5 +11,5 @@ Laravel, Mysql, Apache Server
 ### Frontend: 
 VueJS
 
-<br><hr>
+<hr>
 Visit the wiki for walkthrough of building a site like this: [Wiki](../../wiki)
