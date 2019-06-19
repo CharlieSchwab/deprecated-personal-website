@@ -79,7 +79,7 @@
                 
                 var vueFormData = this.getVueObject(this.tag);//user-input
                 
-                //append user-input into formData, if given
+                //push user-input into formData, if given
                 Object.keys(vueFormData).forEach(function(key){
                     if(vueFormData[key] != ""){
                         formData.append(key, vueFormData[key]);
@@ -99,8 +99,7 @@
 
             //will be used when loading existing data into form for update operation
             setFormData(data){
-                this.tag.name = "test";
-                this.tag.type = "";
+                this.tag = data;
                 //TODO...
             }
 

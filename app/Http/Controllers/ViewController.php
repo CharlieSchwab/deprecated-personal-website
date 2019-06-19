@@ -14,4 +14,10 @@ class ViewController extends Controller
         return view('allProjects');
     }
 
+
+    //this function will only be called from a protected route
+    public function showAdminDashboard(Request $request){
+        return view('dashboard');
+    }
+
 }

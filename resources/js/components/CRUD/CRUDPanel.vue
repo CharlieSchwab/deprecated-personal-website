@@ -20,15 +20,7 @@
             <!-- Modal body-->
             <div class="modal-body">
 
-              <!-- form content, cased in sub-components -->
-              <component v-bind:is="currentModalForm" ref="CRUDForm"></component>
-
-              <!--spinner-->
-              <div id="spinner-container">
-                <div id="loading" class=" d-block mx-auto"></div>
-              </div>
-
-              <!-- error panel, if any errors exist -->
+                            <!-- error panel, if any errors exist -->
               <transition name="shake">
                 <div v-if="errorList.length > 0" class="alert alert-danger no-margins mx-auto">
                   <p class='no-margins'><b>There was a Problem with sending your request:</b></p>
@@ -39,6 +31,15 @@
                   </ul>
                 </div>
               </transition>
+              <br>
+              <!-- form content, cased in sub-components -->
+              <component v-bind:is="currentModalForm" ref="CRUDForm"></component>
+
+              <!--spinner-->
+              <div id="spinner-container">
+                <br>
+                <div id="loading" class=" d-block mx-auto"></div>
+              </div>
             </div>
 
             <!-- Modal footer -->
@@ -75,7 +76,7 @@
         <div class='card-body'>
           <h2 class='text-center'>Tags</h2>
           <hr>
-          <button v-on:click="showCreateTagModal()" type="button" class="btn btn-lg main-btn float-right">
+          <button v-on:click="showUpdateTagModal()" type="button" class="btn btn-lg main-btn float-right">
             <b><i class='fa fa-plus-circle'></i> Create New Tag</b>
           </button>
         </div>
@@ -159,6 +160,19 @@
         $(CRUD_MODAL_ID).modal();
       },
 
+      showUpdateTagModal(){
+        this.setCRUDModalText(
+          "Update Tag",
+          "updateTagForm",
+          "updateTagBtn",
+          "Update Tag"
+        );
+
+        this.currentModalForm = TAG_FORM;
+        //TODO: figure out a way to set form data in sub-component, even though it is just loaded after this line
+        $(CRUD_MODAL_ID).modal();
+      },
+
       resetNotification() {
         this.notificationMessage = "";
       },
@@ -213,7 +227,7 @@
           this.errorList = [{ error: response.status + ": " + response.statusText }];
           return;
         }
-
+        //only accept JSON responses
         try{
           var responseData = JSON.parse(response.response)
         } catch(err){
@@ -234,6 +248,7 @@
         }
       },
 
+      //handler for when no response is received
       CRUDOperationError(event) {
         $('#spinner-container').hide();
         this.errorList = [{ error: "Could not send request to server. (Might be down)" }];
