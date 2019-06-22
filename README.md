@@ -12,4 +12,5 @@ Laravel, Mysql, Apache Server
 VueJS
 
 <hr>
+
 Visit the wiki for walkthrough of building a site like this: [Wiki](../../wiki)
