@@ -1,0 +1,13 @@
+{
+    "tag": {
+        "CREATE_URL": "/createTag",
+        "UPDATE_TAG": "/updateTag",
+        "DELETE_TAG": "/deleteTag"
+    },
+
+    "project": {
+        "CREATE_URL": "/createTag",
+        "UPDATE_TAG": "/updateTag",
+        "DELETE_TAG": "/deleteTag"
+    }
+}

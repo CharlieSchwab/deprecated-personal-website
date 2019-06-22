@@ -17,7 +17,7 @@
                 <input v-model="tag.type" type="text" class="form-control" name="type"/>
             </div>
         </div>
-        
+        <!-- Vue component for image input -->
         <image-input ref="imageInput" imageInputLabelText='Upload Tag Icon' imageInputElementName='icon' maxPreviewSize='300'></image-input>
         <br>
         <div class="form-group row no-margins">
@@ -32,8 +32,6 @@
 
 <script>
     var imageInput = require('./ImageUpload.vue').default;
-    var targetRoute = "/createTag";
-
 
     export default{
         data() {
@@ -44,14 +42,12 @@
                     type: "",
                     icon_filepath: "",
                     show_on_homepage: false
-                },
-
-                targetURL: targetRoute
+                }
             }
         },
 
         mounted: function(){
-            this.$parent.prefillFormData();
+            this.$parent.onSubFormMounted();//send signal to parent that vue subcomponent has been loaded
         },
 
         components: {
@@ -63,14 +59,10 @@
                 return JSON.parse(JSON.stringify(data));
             },
 
-            //get the URL to POST this form to
-            getTargetURL(){
-                return this.targetURL;
-            },
-
             //send back an errorList, if errorList is empty, THEN FORM is considered valid
             validateFormData(){
                 var errorList = [];
+                //tag is the only required field
                 if(this.tag.name == "") {
                     errorList.push( {error: "Name is a required field"} );
                 }
@@ -80,11 +72,11 @@
 
             //return a FormData object which contains all inputs for this form
             getFormData(){
-                var formData = new FormData();//data to send
+                var formData = new FormData();//data to send, iniitally empty
                 
                 var vueFormData = this.getVueObject(this.tag);//user-input
                 
-                //push user-input into formData, if given
+                //push user-input into formData, if a value besides empty string is given
                 Object.keys(vueFormData).forEach(function(key){
                     if(vueFormData[key] != ""){
                         formData.append(key, vueFormData[key]);
@@ -92,7 +84,6 @@
                 });
 
                 //add image to formdata using sub-component's functions, if any image was uploaded
-                //NOTE: also could've used "formData.set(..)""
                 var uploadedImage = this.$refs.imageInput;
                 if(uploadedImage.getUploadedFile() != ""){
                     formData.append(uploadedImage.getImageInputElementName(), uploadedImage.getUploadedFile());
@@ -105,7 +96,6 @@
             //will be used when loading existing data into form for update operation
             setFormData(data){
                 this.tag = data;
-                //TODO...
             }
 
         }

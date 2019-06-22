@@ -6,7 +6,7 @@
             </label>
 
             <div class="col-md-6">
-                <input type="text" class="form-control @error('project') is-invalid @enderror" name="name" required autofocus>
+                <input v-model="project.name" type="text" class="form-control" name="name" autofocus>
             </div>
         </div>
 
@@ -16,9 +16,56 @@
             </label>
 
             <div class="col-md-6">
-                <input id="description" type="text" class="form-control @error('icon') is-invalid @enderror" name="description">
+                <input id="description" type="text" class="form-control" name="description">
             </div>
         </div>
     </div>
 </template>
 
+<script>
+    var imageInput = require('./ImageUpload.vue').default;
+
+    export default{
+        data(){
+            return {
+                project: {
+                    id: "",
+                    name: "",
+                    //TODO...
+                }
+            }
+        },
+
+        mounted: function(){
+            this.$parent.onSubFormMounted();
+        },
+
+        components:{
+            'image-input': imageInput
+        },
+
+        methods: {
+            getVueObject(data){
+                return JSON.parse(JSON.stringify(data));
+            },
+
+            //send back an errorList, if errorList is empty, THEN FORM is considered valid
+            validateFormData(){
+                var errorList = [];
+                if(this.project.name == "") {
+                    errorList.push( {error: "Name is a required field"} );
+                }
+                return errorList;
+            },
+
+            getFormData(){
+                return 'test';
+            },
+
+            setFormData(data){
+                this.project = data;
+            }
+
+        }
+    }
+</script>

@@ -56,7 +56,7 @@
 
     <!--notification bar-->
     <transition name="fade">
-      <div v-if="notificationMessage != ''" id="notificationMessage" class="alert alert-success no-margins">
+      <div v-if="notificationMessage != ''" id="notificationMessage" class="alert no-margins" :class='{ "alert-danger": notificationType == "error", "alert-success": notificationType == "success"}'>
         <p class='text-center no-margins'>{{ notificationMessage }}</p>
       </div>
     </transition>
@@ -76,7 +76,7 @@
         <div class='card-body'>
           <h2 class='text-center'>Tags</h2>
           <hr>
-          <button v-on:click="showUpdateTagModal()" type="button" class="btn btn-lg main-btn float-right">
+          <button v-on:click="showCreateTagModal()" type="button" class="btn btn-lg main-btn float-right">
             <b><i class='fa fa-plus-circle'></i> Create New Tag</b>
           </button>
         </div>
@@ -93,12 +93,16 @@
 </style>
 
 <script>
+  //constant strings
   const CRUD_MODAL_ID = "#CRUDModal", PROJECT_FORM = "project-form", TAG_FORM = "tag-form";
+  //load URL endpoints from JSON
+  import CRUDEndpoints from '../json/CRUDEndpoints.json';
 
   var projectForm = require('./ProjectForm').default;
   var tagForm = require('./TagForm.vue').default;
 
   export default {
+    //register sub-components
     components: {
       'tag-form': tagForm,
       'project-form': projectForm,
@@ -114,10 +118,12 @@
 
         //display contoller, shows different Vue components based on type of form to display
         currentModalForm: "",
-        //another display controller, determines whether or not data is prefilled for the form component
-        isUpdateOperation: false,
+        //this property will hold the object that has been selected for "update" or "delete" operation. 
+        //If "create" operation, value will be ""
+        selectedDataObject: "",
+        targetURL: "",
 
-        notificationMessageBackgroundColor: "",
+        notificationType: "",
         notificationMessage: "",
         errorList: []
       }
@@ -131,81 +137,66 @@
         this.modalSubmitBtnText = modalSubmitBtnText;
       },
 
+      //set text for modal, load the specific form subcomponent and set up targetURL
       showCreateProjectModal() {
-        this.setCRUDModalText(
-          "Create New Project",
-          "createProjectForm",
-          "createProjectBtn",
-          "Create Project"
-        );
-
-        this.currentModalForm = PROJECT_FORM;
-        $(CRUD_MODAL_ID).modal();
+        this.setCRUDModalText( "Create New Project", "createProjectForm", "createProjectBtn", "Create Project" );
+        this.selectedDataObject = "";
+        this.currentModalForm = PROJECT_FORM;//loads specific subcomponent and dynamically mounts it to DOM
+        this.targetURL = CRUDEndpoints.project.CREATE_URL;
       },
 
       showUpdateProjectModal() {
-        this.setCRUDModalText(
-          "Update a Project",
-          "updateProjectForm",
-          "updateProjectBtn",
-          "Update Project"
-        );
+        this.setCRUDModalText( "Update a Project", "updateProjectForm", "updateProjectBtn", "Update Project" );
+        //TODO: set this.selectedDataObject here based on which project to update ...
+        this.currentModalForm = PROJECT_FORM;
+        this.targetURL = CRUDEndpoints.project.UPDATE_URL;
       },
 
       showCreateTagModal() {
-        this.setCRUDModalText(
-          "Create New Tag",
-          "createTagForm",
-          "createTagBtn",
-          "Create Tag"
-        );
-
+        this.setCRUDModalText( "Create New Tag", "createTagForm", "createTagBtn", "Create Tag" );
+        this.selectedDataObject = "";
         this.currentModalForm = TAG_FORM;
-        $(CRUD_MODAL_ID).modal();
+        this.targetURL = CRUDEndpoints.tag.CREATE_URL;
       },
 
       showUpdateTagModal(){
-        this.setCRUDModalText(
-          "Update Tag",
-          "updateTagForm",
-          "updateTagBtn",
-          "Update Tag"
-        );
+        this.setCRUDModalText( "Update Tag", "updateTagForm", "updateTagBtn", "Update Tag" );
 
-        //when this button gets clicked, an event will be fired with it, so take event args and save the data object in view model ...
-
-        //load the form, do not show modal yet, wait for data to be prefilled
-        this.isUpdateOperation = true;
-        this.currentModalForm = TAG_FORM;
-      },
-
-
-      //this function will be called by the sub-form when the sub-component is mounted
-      prefillFormData(){
-        if(this.isUpdateOperation){
-          
-          //passing in static JSON data now, but in the future, send json data of selected Data object (either project or tag) to the subcomponent
-          this.$refs.CRUDForm.setFormData(
-            {
-              'id': '1',
-              'name': 'test',
-              'type': 'framework',
-              'icon_filepath': '/assets/logos/logo.png',
-              'show_on_homepage': true
-            }
-          );
-          $(CRUD_MODAL_ID).modal();
+        //when this button gets clicked, an event will be fired with it, so take event args and save the data object in view model 
+        //For now, showing by setting static tag object
+        this.selectedDataObject =             
+        {
+          'id': '1',
+          'name': 'test',
+          'type': 'framework',
+          'icon_filepath': '/assets/logos/logo.png',
+          'show_on_homepage': true
         }
+
+        this.currentModalForm = TAG_FORM;
+        this.targetURL = CRUDEndpoints.tag.UPDATE_URL;
       },
 
+
+      //this function will be called by the sub-form when the specific form is mounted
+      onSubFormMounted(){
+        //if a data object is currently selected, prefill the form with the object's corresponding data
+        if(this.selectedDataObject != ""){          
+          this.$refs.CRUDForm.setFormData( this.selectedDataObject );
+        }
+        //show CRUD modal (which contains the subform)
+        $(CRUD_MODAL_ID).modal();
+      },
+
+
+      //close CRUD modal, reset all viewModel data to default values
       closeCRUDModal() {
         $(CRUD_MODAL_ID).modal('toggle');
 
-        //reset all view-model data to default values
         this.setCRUDModalText("", "", "", "");//reset form modal text
         this.errorList = []; //reset error list
+        this.selectedDataObject = "";//reset selected data object
         this.currentModalForm = ""; //remove sub-component
-        this.isUpdateOperation = false;
       },
 
 
@@ -213,9 +204,9 @@
       // submit the current form (whichever type of form, Create, Update, or Delete)
       submitCRUDOperation() {
         this.errorList = [];//reset error(s)
+        
         //load specific form subcomponent, and its formData
         var form = this.$refs.CRUDForm;
-
         //validate form, if errors exist, show the errors and exit the function
         var errorsInForm = form.validateFormData();
         if (errorsInForm.length > 0) {
@@ -223,17 +214,18 @@
           return;
         }
 
-        //load form data into variable
+        //load form contents into request body object
         var formData = form.getFormData();
         formData.append("_token", Laravel.csrfToken);//add csrf token
 
+        //have to use XMLHttpRequest to send file via AJAX
         var request = new XMLHttpRequest();
         //define event handlers for when request is submitted
         request.addEventListener('load', this.CRUDOperationResponseReceived);
         request.addEventListener('error', this.CRUDOperationError);
 
         //send request to targetURL
-        request.open('POST', form.getTargetURL(), true);
+        request.open('POST', this.targetURL, true);
         request.send(formData);
 
         $('#spinner-container').show();
@@ -261,7 +253,7 @@
         //if success, then close modal and show notification
         if (responseData.success) {
           this.closeCRUDModal();
-          this.notificationMessageBackgroundColor = "success";
+          this.notificationType = "success";
           this.notificationMessage = responseData.message;
           //hide notification after some time
           setTimeout(this.resetNotification, 5000);
