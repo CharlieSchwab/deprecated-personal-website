@@ -29,6 +29,14 @@
   animation: shake 0.5s;
 }
 
+.list-enter-active, .list-leave-active {
+  transition: all 1s;
+}
+.list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
 @keyframes shake{
   0% { transform: translate(1px, 1px) rotate(0deg); }
   10% { transform: translate(-1px, -2px) rotate(-1deg); }
@@ -115,8 +123,13 @@ footer{
 
 .alt-bg
 {
+  background-color: #f8fafc;
+}
+
+.alt-bg-dark{
   background-color: $light-grey;
 }
+
 .secondary-bg{
   background-color: $secondary-theme;
 }
@@ -137,7 +150,7 @@ footer{
   background-color: $main-theme;
 }
 
-.navbar-logo{
+.small-logo{
   width:35px;
   height:35px;
 }

@@ -1,5 +1,5 @@
     <footer class='white-text'>
-        <div class='separation-line alt-bg'></div>
+        <div class='separation-line alt-bg-dark'></div>
         <div class='d-flex flex-row bg-dark'>
             <img src='/assets/logos/logo.png' class='spaced ml-5 footer-logo' alt="">
             <p class='align-self-end spaced white-text footer-text'> 

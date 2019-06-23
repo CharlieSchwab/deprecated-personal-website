@@ -67,7 +67,7 @@ class TagController extends Controller
 
 
     //TOOD...
-    public function updateTag(Request $request){
+    public function updateTag(Requests\UpdateTagRequest $request){
 
     }
 

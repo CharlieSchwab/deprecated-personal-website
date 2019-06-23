@@ -24,11 +24,8 @@ class UpdateProjectRequest extends FormRequest
     public function rules()
     {
         return [
+            'id' => 'required',
             'name' => 'required',
-            'description' => 'required',
-            'thumbnail',
-            'url',
-            'github_url',
             'tags' => 'required'
         ];
     }
