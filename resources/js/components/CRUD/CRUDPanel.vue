@@ -73,7 +73,6 @@
         </transition>
         <!-- CRUD Panel Page, shows data and contains trigger buttons -->
         <br />
-        <br />
         <div class="row">
             <div class="col-md-10 mx-auto">
                 <div class="card padded">
@@ -82,44 +81,51 @@
                             Admin Dashboard
                             <div class="float-right">
                                 <button
-                                    v-on:click="showCreateProjectModal()"
-                                    type="button" class="btn spaced btn-lg main-btn float-right">
-                                    <b><i class="fa fa-plus-circle"></i> Create New Project</b>
+                                    @click="showCreateTagModal()"
+                                    type="button" class="btn btn-lg btn-space main-btn" >                                  <b>
+                                        <i class="fa fa-plus-circle"></i> Create New Tag</b>
                                 </button>
                                 <button
-                                    v-on:click="showCreateTagModal()"
-                                    type="button" class="btn spaced btn-lg main-btn float-right" >                                  <b>
-                                        <i class="fa fa-plus-circle"></i> Create New Tag</b>
+                                    @click="showCreateProjectModal()"
+                                    type="button" class="btn btn-lg btn-space main-btn">
+                                    <b><i class="fa fa-plus-circle"></i> Create New Project</b>
                                 </button>
                             </div>
                         </h1>
                         <br />
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col ">
                                 <div class="card alt-bg">
                                     <div class="card-body">
                                         <h3 class="card-title">Tags</h3>
-                                        <transition-group name="list">
-                                          <div class='card spaced' v-for="tag in tagData" v-bind:key="tag.id">
-                                              <div class='card-body'>
-                                                <div class='d-flex'>
-                                                  <div>
-                                                    <img class='small-logo' v-bind:src = tag.icon_filepath />
-                                                  </div>
-                                                  <div class='spaced'><b>{{tag.name}}</b></div>
-                                                  <div class='spaced'><b>{{tag.type}}</b></div>
-                                                  <div class='ml-auto'>
-                                                    <button class='btn btn-primary'  @click="updateTag(tag)"> Update</button>
+                                        <div class='CRUD-list'>
+                                          <transition-group name="list">
+                                            <div class='card spaced' v-for="tag in tagData" v-bind:key="tag.id">
+                                                <div class='card-body'>
+                                                  <div class='d-flex'>
+                                                    <div>
+                                                      <img class='small-logo' v-bind:src = tag.icon_filepath />
+                                                    </div>
+                                                    <div class='spaced'><b>{{tag.name}}</b></div>
+                                                    <div class='spaced mx-auto'><div class='text-center badge badge-pill alt-bg'>{{tag.type}}</div></div>
+                                                    <div class='ml-auto'>
+                                                      <button class='btn btn-primary'  @click="updateTag(tag)"> Update</button>
+                                                      <button class='btn btn-danger' @click="deleteTag(tag.id)">Delete</button>
+                                                    </div>
                                                   </div>
                                                 </div>
-                                              </div>
-                                          </div>
-                                        </transition-group>
+                                            </div>
+                                          </transition-group>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="card alt-bg"></div>
+                            <div class="col">
+                                <div class="card alt-bg">
+                                  <div class='card-body'>
+                                    <h3 class='card-title'>Projects</h3>
+                                  </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -158,6 +164,15 @@
             "project-form": projectForm
         },
 
+        //this function will be called by the sub-component when its specific form is mounted (dyanamically created Vue object)
+        onSubFormMounted() {
+            //if a data object is currently selected, prefill the form with the object's corresponding data
+            if (this.selectedDataObject != "") {
+                this.$refs.CRUDForm.setFormData(this.selectedDataObject);
+            }
+            $(CRUD_MODAL_ID).modal();
+        },
+
         data() {
             return {
                 //cosmetic variables for the form's container
@@ -182,7 +197,7 @@
             };
         },
 
-        //on being loaded, retreive data
+        //retreive data
         beforeMount(){
           axios.get(CRUDEndpoints.tag.FETCH_URL).then(this.initializeTagData);
         },
@@ -210,6 +225,10 @@
               this.showUpdateTagModal();
             },
 
+            deleteTag(id){
+
+            },
+
 
 
             //set text for modal, load the specific form subcomponent and set up targetURL
@@ -218,14 +237,6 @@
                 this.selectedDataObject = "";
                 this.currentModalForm = PROJECT_FORM; //loads specific subcomponent and dynamically mounts it to DOM
                 this.targetURL = CRUDEndpoints.project.CREATE_URL;
-            },
-
-
-
-            showUpdateProjectModal() {
-                this.setCRUDModalText( "Update a Project", "updateProjectForm", "updateProjectBtn", "Update Project");
-                this.currentModalForm = PROJECT_FORM;
-                this.targetURL = CRUDEndpoints.project.UPDATE_URL;
             },
 
             showCreateTagModal() {
@@ -240,6 +251,14 @@
                 this.targetURL = CRUDEndpoints.tag.CREATE_URL;
             },
 
+            showUpdateProjectModal() {
+                this.setCRUDModalText( "Update a Project", "updateProjectForm", "updateProjectBtn", "Update Project");
+                this.currentModalForm = PROJECT_FORM;
+                this.targetURL = CRUDEndpoints.project.UPDATE_URL;
+            },
+
+
+
             showUpdateTagModal() {
                 this.setCRUDModalText(
                     "Update Tag",
@@ -250,15 +269,6 @@
 
                 this.currentModalForm = TAG_FORM;
                 this.targetURL = CRUDEndpoints.tag.UPDATE_URL;
-            },
-
-            //this function will be called by the sub-form when the specific form is mounted
-            onSubFormMounted() {
-                //if a data object is currently selected, prefill the form with the object's corresponding data
-                if (this.selectedDataObject != "") {
-                    this.$refs.CRUDForm.setFormData(this.selectedDataObject);
-                }
-                $(CRUD_MODAL_ID).modal();
             },
 
             //close CRUD modal, reset all viewModel data to default values

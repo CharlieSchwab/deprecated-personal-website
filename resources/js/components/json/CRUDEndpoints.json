@@ -2,14 +2,14 @@
     "tag": {
         "CREATE_URL": "/createTag",
         "FETCH_URL": "/getTags",
-        "UPDATE_TAG": "/updateTag",
-        "DELETE_TAG": "/deleteTag"
+        "UPDATE_URL": "/updateTag",
+        "DELETE_URL": "/deleteTag"
     },
 
     "project": {
         "CREATE_URL": "/createTag",
         "FETCH_URL": "/getProjects",
-        "UPDATE_TAG": "/updateTag",
-        "DELETE_TAG": "/deleteTag"
+        "UPDATE_URL": "/updateTag",
+        "DELETE_URL": "/deleteTag"
     }
 }

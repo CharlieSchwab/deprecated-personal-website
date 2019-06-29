@@ -8,6 +8,7 @@
 
 @section('body')
     <crud-panel></crud-panel>
+    <br>
 @stop
 
 @section('scripts')

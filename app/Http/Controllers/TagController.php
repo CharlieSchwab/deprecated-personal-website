@@ -68,7 +68,8 @@ class TagController extends Controller
 
     //TOOD...
     public function updateTag(Requests\UpdateTagRequest $request){
-
+        $tagToUpdate = Tag::find($request->input('id'));
+        dd($tagToUpdate);
     }
 
     public function deleteTag(Request $request){

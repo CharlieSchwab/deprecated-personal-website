@@ -13,7 +13,7 @@ class CreateTagRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;//TODO: set to false once auth routes are up
+        return true;
     }
 
     /**
