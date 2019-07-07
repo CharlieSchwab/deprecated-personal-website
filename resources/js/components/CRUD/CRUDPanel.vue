@@ -164,14 +164,6 @@
             "project-form": projectForm
         },
 
-        //this function will be called by the sub-component when its specific form is mounted (dyanamically created Vue object)
-        onSubFormMounted() {
-            //if a data object is currently selected, prefill the form with the object's corresponding data
-            if (this.selectedDataObject != "") {
-                this.$refs.CRUDForm.setFormData(this.selectedDataObject);
-            }
-            $(CRUD_MODAL_ID).modal();
-        },
 
         data() {
             return {
@@ -209,6 +201,15 @@
               return JSON.parse(JSON.stringify(data));
             },
 
+            //this function will be called by the sub-component when its specific form is mounted (dyanamically created Vue object)
+            onSubFormMounted() {
+                //if a data object is currently selected, prefill the form with the object's corresponding data
+                if (this.selectedDataObject != "") {
+                    this.$refs.CRUDForm.setFormData(this.selectedDataObject);
+                }
+                $(CRUD_MODAL_ID).modal();
+            },
+
             setCRUDModalText( modalTitle, formID, modalSubmitBtnID, modalSubmitBtnText) {
                 this.modalTitle = modalTitle;
                 this.formID = formID;
@@ -228,6 +229,8 @@
             deleteTag(id){
 
             },
+
+            
 
 
 
