@@ -75,7 +75,7 @@
         <br />
         <div class="row">
             <div class="col-md-10 mx-auto">
-                <div class="card padded">
+                <div class="card rounded-edges padded">
                     <div class="card-body">
                         <h1 class="card-title">
                             Admin Dashboard
@@ -92,31 +92,33 @@
                                 </button>
                             </div>
                         </h1>
-                        <br />
+                        <hr />
                         <div class="row">
-                            <div class="col ">
-                                <div class="card alt-bg">
+                            <div class="col">
+                                <div class="card rounded-edges alt-bg">
                                     <div class="card-body">
                                         <h3 class="card-title">Tags</h3>
-                                        <div class='CRUD-list'>
-                                          <transition-group name="list">
-                                            <div class='card spaced' v-for="tag in tagData" v-bind:key="tag.id">
-                                                <div class='card-body'>
-                                                  <div class='d-flex'>
-                                                    <div>
-                                                      <img class='small-logo' v-bind:src = tag.icon_filepath />
+                                        <div class='scrollbar grey-scrollbar'>
+                                            <div class='scrollbar-content'>
+                                                <transition-group name="list">
+                                                    <div class='card rounded-edges spaced' v-for="tag in tagData" v-bind:key="tag.id">
+                                                        <div class='card-body'>
+                                                        <div class='d-flex'>
+                                                            <div>
+                                                            <img class='small-logo' v-bind:src = tag.icon_filepath />
+                                                            </div>
+                                                            <div class='spaced'><b>{{tag.name}}</b></div>
+                                                            <div class='spaced mx-auto'><div class='text-center badge badge-pill alt-bg'>{{tag.type}}</div></div>
+                                                            <div class='ml-auto'>
+                                                            <button class='btn btn-primary'  @click="updateTag(tag)"> Update</button>
+                                                            <button class='btn btn-danger' @click="deleteTag(tag.id)">Delete</button>
+                                                            </div>
+                                                        </div>
+                                                        </div>
                                                     </div>
-                                                    <div class='spaced'><b>{{tag.name}}</b></div>
-                                                    <div class='spaced mx-auto'><div class='text-center badge badge-pill alt-bg'>{{tag.type}}</div></div>
-                                                    <div class='ml-auto'>
-                                                      <button class='btn btn-primary'  @click="updateTag(tag)"> Update</button>
-                                                      <button class='btn btn-danger' @click="deleteTag(tag.id)">Delete</button>
-                                                    </div>
-                                                  </div>
-                                                </div>
+                                                </transition-group>
                                             </div>
-                                          </transition-group>
-                                        </div>
+                                        </div>  
                                     </div>
                                 </div>
                             </div>
@@ -201,45 +203,37 @@
               return JSON.parse(JSON.stringify(data));
             },
 
-            //this function will be called by the sub-component when its specific form is mounted (dyanamically created Vue object)
+
+            initializeTagData(response){
+              this.tagData = response.data.tags;
+            },
+
+            //this function will be called from the sub-component when its specific form is mounted (dyanamically created Vue object)
             onSubFormMounted() {
                 //if a data object is currently selected, prefill the form with the object's corresponding data
                 if (this.selectedDataObject != "") {
                     this.$refs.CRUDForm.setFormData(this.selectedDataObject);
                 }
+                //IMPORTANT: the modal will only be shown after the dynamic vue object has been mounted
                 $(CRUD_MODAL_ID).modal();
             },
+
 
             setCRUDModalText( modalTitle, formID, modalSubmitBtnID, modalSubmitBtnText) {
                 this.modalTitle = modalTitle;
                 this.formID = formID;
                 this.modalSubmitBtnID = modalSubmitBtnID;
                 this.modalSubmitBtnText = modalSubmitBtnText;
-            },
-
-            initializeTagData(response){
-              this.tagData = response.data.tags;
-            },
-
-            updateTag(data){
-              this.selectedDataObject = this.getVueObject(data);
-              this.showUpdateTagModal();
-            },
-
-            deleteTag(id){
-
-            },
-
-            
-
+            },           
 
 
             //set text for modal, load the specific form subcomponent and set up targetURL
             showCreateProjectModal() {
                 this.setCRUDModalText( "Create New Project", "createProjectForm", "createProjectBtn", "Create Project");
                 this.selectedDataObject = "";
-                this.currentModalForm = PROJECT_FORM; //loads specific subcomponent and dynamically mounts it to DOM
                 this.targetURL = CRUDEndpoints.project.CREATE_URL;
+                this.currentModalForm = PROJECT_FORM; //loads specific subcomponent and dynamically mounts it to DOM
+                //on subform being loaded, the modal will be shown...
             },
 
             showCreateTagModal() {
@@ -250,17 +244,20 @@
                     "Create Tag"
                 );
                 this.selectedDataObject = "";
-                this.currentModalForm = TAG_FORM;
                 this.targetURL = CRUDEndpoints.tag.CREATE_URL;
+                this.currentModalForm = TAG_FORM;//load "tag-form" vue sub-component, modal will show when vue sub-component is loaded
             },
 
             showUpdateProjectModal() {
                 this.setCRUDModalText( "Update a Project", "updateProjectForm", "updateProjectBtn", "Update Project");
-                this.currentModalForm = PROJECT_FORM;
                 this.targetURL = CRUDEndpoints.project.UPDATE_URL;
+                this.currentModalForm = PROJECT_FORM;
             },
 
-
+            updateTag(data){
+              this.selectedDataObject = this.getVueObject(data);//set data before showing modal
+              this.showUpdateTagModal();
+            },
 
             showUpdateTagModal() {
                 this.setCRUDModalText(
@@ -300,7 +297,7 @@
                 var formData = form.getFormData();
                 formData.append("_token", Laravel.csrfToken); //add csrf token
 
-                //have to use XMLHttpRequest to send file via AJAX
+                //have to use XMLHttpRequest to send file(s) via AJAX
                 var request = new XMLHttpRequest();
                 //define event handlers for when request is submitted
                 request.addEventListener(
@@ -323,7 +320,7 @@
 
                 if (response.status != 200) {
                     this.errorList = [
-                        { error: response.status + ": " + response.statusText }
+                        { error: "SERVER ERROR: " + response.status + ": " + response.statusText }
                     ];
                     return;
                 }

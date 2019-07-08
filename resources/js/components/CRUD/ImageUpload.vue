@@ -1,31 +1,36 @@
 <template>
   <div id="imageUpload">
     <div id="imageUploadContainer" :style="{ 'width': maxPreviewSize + 'px'}">
-      <!-- show input box if file is empty -->
-      <transition name="fadeOnShow">
-        <div id="inputBox" v-if="file == ''">
-          <label id="imageUploadLabel" for="icon" class="btn btn-primary">
-            <b>{{ imageInputLabelText }}</b>
-          </label>
-          <br>
-          <input
-            id="image-input"
-            type="file"
-            :name="imageInputElementName"
-            @change="handleFileUpload"
-          >
-        </div>
-      </transition>
-      <!-- show image preview if file is not empty -->
-      <transition name="fadeOnShow">
-        <div v-if="file != ''">
-          <img id="imagePreview" src="#" alt="No File">
-          <!-- reset image file if given -->
-          <div :style="{ 'width': maxPreviewSize + 'px' }" class="mx-auto">
-            <a @click="resetImageUpload" class="btn btn-dark white-text d-block pointer">Reset Image</a>
+      <div v-if="showExistingImage">
+        
+      </div>
+      <div v-else>
+        <!-- show input box if file is empty -->
+        <transition name="fadeOnShow">
+          <div id="inputBox" v-if="file == ''">
+            <label id="imageUploadLabel" for="icon" class="btn btn-primary">
+              <b>{{ imageInputLabelText }}</b>
+            </label>
+            <br>
+            <input
+              id="image-input"
+              type="file"
+              :name="imageInputElementName"
+              @change="handleFileUpload"
+            >
           </div>
-        </div>
-      </transition>
+        </transition>
+        <!-- show image preview if file is not empty -->
+        <transition name="fadeOnShow">
+          <div v-if="file != ''">
+            <img id="imagePreview" src="#" alt="No File">
+            <!-- reset image file if given -->
+            <div :style="{ 'width': maxPreviewSize + 'px' }" class="mx-auto">
+              <a @click="resetImageUpload" class="btn btn-dark white-text d-block pointer">Reset Image</a>
+            </div>
+          </div>
+        </transition>
+      </div>
     </div>
     <!-- if any errors exist, show alert -->
     <transition name="shake">
@@ -104,7 +109,10 @@ export default {
   data() {
     return {
       fileUploadError: "",
-      file: "" //stores the uploaded file
+      file: "", //stores the uploaded file
+
+      showExistingImage: false,
+      existingImagePath: ""
     };
   },
   methods: {

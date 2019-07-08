@@ -2,7 +2,7 @@
     <div id='tag-form'>
         <div class="form-group row">
             <label for="name" class="col-md-4 col-form-label text-md-right">
-                <b class='alert alt-bg'>Tag Name*</b>
+                <b class='alert alt-bg rounded-edges'>Tag Name*</b>
             </label>
 
             <div class="col-md-6">
@@ -11,17 +11,23 @@
         </div>
         <div class='form-group row'>
             <label for='type' class='col-md-4 col-form-label text-md-right'>
-                <b class='alert alt-bg'>Tag Type</b>
+                <b class='alert alt-bg rounded-edges'>Tag Type</b>
             </label>
             <div class='col-md-6'>
                 <input v-model="tag.type" type="text" class="form-control" name="type"/>
             </div>
         </div>
-        <!-- Vue component for image input -->
-        <image-input ref="imageInput" imageInputLabelText='Upload Tag Icon' imageInputElementName='icon' maxPreviewSize='300'></image-input>
-        <br>
+
+        <div v-if="tag.icon_filepath == ''">
+            <!-- show if Vue component for image input -->
+            <image-input ref="imageInput" imageInputLabelText='Upload Tag Icon' imageInputElementName='icon' maxPreviewSize='300'></image-input>
+            <br>
+        </div>
+        <div v-else>
+
+        </div>
         <div class="form-group row no-margins">
-            <label for="showOnHomepage" class='text-center alert alt-bg mx-auto no-margins'>
+            <label for="showOnHomepage" class='text-center alert alt-bg rounded-edges mx-auto no-margins'>
                 <input id="showOnHomepage" type="checkbox" v-model="tag.show_on_homepage">
                 <span>Show this Tag on the Home page?</span>
             </label>
@@ -47,14 +53,14 @@
         },
 
         mounted: function(){
-            this.$parent.onSubFormMounted();//send signal to parent that vue subcomponent has been loaded
+            this.$parent.onSubFormMounted();//send signal to parent that this vue subcomponent has been loaded
         },
 
         components: {
             'image-input': imageInput
         },
         methods: {
-            //convert a Vue observer to json data
+            //hepler method: convert a Vue observer to json data
             getVueObject(data){
                 return JSON.parse(JSON.stringify(data));
             },
