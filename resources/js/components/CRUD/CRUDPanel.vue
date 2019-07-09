@@ -16,6 +16,13 @@
                             </button>
                         </div>
                         <div class="modal-body">
+                            <!-- warning prompt, for delete operations -->
+                            <transition name="shake">
+                                <div v-if = "isDeleteOperation" class='alert alert-warning no-margins mx-auto'>
+                                    <b>Warning: Are you sure you want to delete this item?</b>
+                                </div>
+                            </transition>
+
                             <!-- error panel, if any errors exist -->
                             <transition name="shake">
                                 <div 
@@ -82,7 +89,7 @@
                             <div class="float-right">
                                 <button
                                     @click="showCreateTagModal()"
-                                    type="button" class="btn btn-lg btn-space main-btn" >                                  <b>
+                                    type="button" class="btn btn-lg btn-space main-btn" ><b>
                                         <i class="fa fa-plus-circle"></i> Create New Tag</b>
                                 </button>
                                 <button
@@ -111,7 +118,7 @@
                                                             <div class='spaced mx-auto'><div class='text-center badge badge-pill alt-bg'>{{tag.type}}</div></div>
                                                             <div class='ml-auto'>
                                                             <button class='btn btn-primary'  @click="updateTag(tag)"> Update</button>
-                                                            <button class='btn btn-danger' @click="deleteTag(tag.id)">Delete</button>
+                                                            <button class='btn btn-danger' @click="deleteTag(tag)">Delete</button>
                                                             </div>
                                                         </div>
                                                         </div>
@@ -178,6 +185,7 @@
                 //display contoller, shows different Vue components based on type of form to display
                 currentModalForm: "",
                 targetURL: "",
+                isDeleteOperation: false,
                 
                 notificationType: "",
                 notificationMessage: "",
@@ -213,6 +221,11 @@
                 //if a data object is currently selected, prefill the form with the object's corresponding data
                 if (this.selectedDataObject != "") {
                     this.$refs.CRUDForm.setFormData(this.selectedDataObject);
+
+                    //if the form loaded is a delete operation, disable all inputs
+                    if(this.isDeleteOperation){
+                        $('#' + this.formID + " input").prop('disabled', true);
+                    }
                 }
                 //IMPORTANT: the modal will only be shown after the dynamic vue object has been mounted
                 $(CRUD_MODAL_ID).modal();
@@ -248,14 +261,20 @@
                 this.currentModalForm = TAG_FORM;//load "tag-form" vue sub-component, modal will show when vue sub-component is loaded
             },
 
+            //TODO
+            updateProject(project){
+
+            },
+
             showUpdateProjectModal() {
                 this.setCRUDModalText( "Update a Project", "updateProjectForm", "updateProjectBtn", "Update Project");
                 this.targetURL = CRUDEndpoints.project.UPDATE_URL;
                 this.currentModalForm = PROJECT_FORM;
             },
 
-            updateTag(data){
-              this.selectedDataObject = this.getVueObject(data);//set data before showing modal
+            updateTag(tag){
+              this.selectedDataObject = this.getVueObject(tag);//set data before showing modal
+              this.targetURL = CRUDEndpoints.tag.UPDATE_URL;
               this.showUpdateTagModal();
             },
 
@@ -267,8 +286,24 @@
                     "Update Tag"
                 );
 
+                this.currentModalForm = TAG_FORM;//trigger loading of modal last after setting all data
+            },
+
+            deleteTag(tag){
+                this.selectedDataObject = this.getVueObject(tag);
+                this.targetURL = CRUDEndpoints.tag.DELETE_URL;
+                this.isDeleteOperation = true;
+                this.showDeleteTagModal();
+            },
+
+            showDeleteTagModal(){
+                this.setCRUDModalText(
+                    "Delete Tag",
+                    "deleteTagForm",
+                    "deleteTagBtn",
+                    "Delete Tag"
+                );
                 this.currentModalForm = TAG_FORM;
-                this.targetURL = CRUDEndpoints.tag.UPDATE_URL;
             },
 
             //close CRUD modal, reset all viewModel data to default values
@@ -277,6 +312,7 @@
 
                 this.setCRUDModalText("", "", "", ""); //reset form modal text
                 this.errorList = []; //reset error list
+                this.isDeleteOperation = false;
                 this.selectedDataObject = ""; //reset selected data object
                 this.currentModalForm = ""; //remove sub-component
             },
@@ -320,7 +356,7 @@
 
                 if (response.status != 200) {
                     this.errorList = [
-                        { error: "SERVER ERROR: " + response.status + ": " + response.statusText }
+                        { error: "Server Error: " + response.status + ": " + response.statusText }
                     ];
                     return;
                 }
@@ -335,10 +371,7 @@
                 //if success, then close modal and show notification
                 if (responseData.success) {
                     this.closeCRUDModal();
-                    this.notificationType = "success";
-                    this.notificationMessage = responseData.message;
-                    //hide notification after some time
-                    setTimeout(this.resetNotification, 5000);
+                    this.showNotification("success", responseData.message);
                 } else {
                     this.errorList = [{ error: responseData.message }];
                 }
@@ -353,6 +386,15 @@
                             "Could not send request to server. (Might be down)"
                     }
                 ];
+            },
+
+            //show notification right under navbar
+            showNotification(type, message){
+                window.scrollTo(0, 0);
+                this.notificationType = type;
+                this.notificationMessage = message;
+                //hide notification after some time
+                setTimeout(this.resetNotification, 5000);
             },
 
             resetNotification() {

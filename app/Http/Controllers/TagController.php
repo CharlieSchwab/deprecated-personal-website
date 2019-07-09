@@ -13,13 +13,14 @@ class TagController extends Controller
 {
     private static $imageFolder = 'assets/logos';//folder in which images should be stored to
 
-    //need to be authenticated to use this controller
+    //Need to be authenticated to use this controller
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    //create a Tag
+
+    //Create a Tag
     public function createTag(Requests\CreateTagRequest $request){
         //return error if a tag with the given name already exists
         $duplicateTag = Tag::where('name', $request->input('name'))->first();
@@ -35,7 +36,7 @@ class TagController extends Controller
         }
         $tag->show_on_homepage = ($request->input('show_on_homepage') == 'true');
 
-        //handle file upload if included in request, surround with try/catch in case upload fails
+        //handle file upload if included in request
         if($request->hasFile('icon')){
             try{
                 $uploadedImage = $request->file('icon');
@@ -51,14 +52,12 @@ class TagController extends Controller
             }
         }    
 
-        $tag->save();//save the tag
-
-        //return success response
+        //save the tag in the DB, return success
+        $tag->save();
         return response()->json(['success' => true, 'message' => 'The Tag "' . $tag->name . '" has been added']);
     }
 
 
-    
     //returns all tags in the database
     public function getTags(Request $request){
         $tags = Tag::all();
@@ -72,7 +71,27 @@ class TagController extends Controller
         dd($tagToUpdate);
     }
 
-    public function deleteTag(Request $request){
 
+    // Delete Tag functionality, uses same request as update
+    public function deleteTag(Requests\UpdateTagRequest $request){
+        $tag = Tag::find($request->input('id'));
+
+        if(!is_null($tag)){
+            //if img file exists, delete the file as well
+            if($tag->icon_filepath != ""){
+                try{
+                    Storage::disk('public')->delete($tag->icon_filepath);
+                }
+                catch(Exception $e){
+                    return response()->json(['success' => false, 'message' => 'There was an issue with trying to delete the image']);
+                }
+            }
+    
+            $tag->delete();
+            return response()->json(['success' => true, 'deletedID' => $tag->id, 'message' => 'The Tag "' . $tag->name . '" has been deleted']);    
+        }
+        else{
+            return response()->json(['success' => false, 'message' => 'The Tag does not exist']);
+        }
     }   
 }

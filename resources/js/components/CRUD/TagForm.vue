@@ -18,12 +18,12 @@
             </div>
         </div>
 
-        <div v-if="tag.icon_filepath == ''">
+        <div>
             <!-- show if Vue component for image input -->
             <image-input ref="imageInput" imageInputLabelText='Upload Tag Icon' imageInputElementName='icon' maxPreviewSize='300'></image-input>
             <br>
         </div>
-        <div v-else>
+        <div>
 
         </div>
         <div class="form-group row no-margins">
@@ -33,7 +33,6 @@
             </label>
         </div>
     </div>
-
 </template>
 
 <script>
@@ -106,4 +105,4 @@
 
         }
     }
-</script>-
+</script>

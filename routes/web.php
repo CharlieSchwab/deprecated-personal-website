@@ -27,7 +27,7 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/createTag', 'TagController@createTag');
     Route::get('/getTags', 'TagController@getTags');
     Route::post('/updateTag', 'TagController@updateTag');
-    Route::get('/deleteTag/{id}', 'TagController@deleteTag');
+    Route::post('/deleteTag', 'TagController@deleteTag');
 });
 
 
