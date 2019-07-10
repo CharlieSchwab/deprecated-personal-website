@@ -1,13 +1,17 @@
 <template>
   <div id="imageUpload">
-    <div id="imageUploadContainer" :style="{ 'width': maxPreviewSize + 'px'}">
+    <div id="imageUploadContainer" :style="{ 'max-width': maxPreviewSize + 'px'}">
       <div v-if="showExistingImage">
-        
+        <transition name="fadeOnShow">
+          <div>
+            <img id="existingImage" v-bind:src="existingImagePath">
+          </div>
+        </transition>
       </div>
       <div v-else>
         <!-- show input box if file is empty -->
         <transition name="fadeOnShow">
-          <div id="inputBox" v-if="file == ''">
+          <div id="imageUploadInputBox" v-if="file == ''">
             <label id="imageUploadLabel" for="icon" class="btn btn-primary">
               <b>{{ imageInputLabelText }}</b>
             </label>
@@ -49,7 +53,11 @@
   z-index: 5;
 }
 
-#inputBox {
+#existingImage{
+  height:12em;
+}
+
+#imageUploadInputBox {
   height: 100px;
   background: repeating-linear-gradient(
     45deg,
@@ -104,15 +112,14 @@ export default {
   props: {
     imageInputLabelText: String,
     imageInputElementName: String,
-    maxPreviewSize: String
+    maxPreviewSize: String,
+    showExistingImage: Boolean,
+    existingImagePath: String
   },
   data() {
     return {
       fileUploadError: "",
       file: "", //stores the uploaded file
-
-      showExistingImage: false,
-      existingImagePath: ""
     };
   },
   methods: {
