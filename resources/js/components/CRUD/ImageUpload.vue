@@ -5,6 +5,7 @@
         <transition name="fadeOnShow">
           <div>
             <img id="existingImage" v-bind:src="existingImagePath">
+            <a class='btn btn-light d-block pointer' @click='showExistingImage = false'>Update Image</a>
           </div>
         </transition>
       </div>
