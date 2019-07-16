@@ -12,18 +12,17 @@
 |
 */
 \
-Auth::routes(['register' => false]);
-
 Route::get('/', 'ViewController@showHomePage');
 Route::get('/all-projects', 'ViewController@showAllProjects');
+Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
 
-
-//CRUD operations
+//only allow access to login if connected to the DB via the connected middleware
+Route::post('/login', 'Auth\LoginController@login')->name('login')->middleware('connected');
+//CRUD operations - only available if logged in
 Route::middleware(['auth'])->group(function(){
     Route::get('/dashboard', 'ViewController@showAdminDashboard');
     Route::get('/logout', 'Auth\LoginController@logout');
 
-    
     Route::post('/createTag', 'TagController@createTag');
     Route::get('/getTags', 'TagController@getTags');
     Route::post('/updateTag', 'TagController@updateTag');
