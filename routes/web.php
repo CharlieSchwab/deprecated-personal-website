@@ -18,6 +18,7 @@ Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
 
 //only allow access to login if connected to the DB via the connected middleware
 Route::post('/login', 'Auth\LoginController@login')->name('login')->middleware('connected');
+
 //CRUD operations - only available if logged in
 Route::middleware(['auth'])->group(function(){
     Route::get('/dashboard', 'ViewController@showAdminDashboard');

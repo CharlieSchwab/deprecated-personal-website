@@ -6,7 +6,7 @@ Uses simple CRUD operations to showcase "projects" and link them with "tags" (ex
 
 
 ### Backend: 
-Laravel, Mysql, Apache Server
+Laravel, MariaDB, Apache Server
 
 ### Frontend: 
 VueJS
