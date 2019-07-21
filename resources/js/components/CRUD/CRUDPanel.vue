@@ -117,8 +117,8 @@
                                                             <div class='spaced'><b>{{tag.name}}</b></div>
                                                             <div class='spaced mx-auto'><div class='text-center badge badge-pill alt-bg'>{{tag.type}}</div></div>
                                                             <div class='ml-auto'>
-                                                            <button class='btn btn-primary'  @click="updateTag(tag)"> Update</button>
-                                                            <button class='btn btn-danger' @click="deleteTag(tag)">Delete</button>
+                                                            <button class='btn btn-light grey-outline'  @click="updateTag(tag)"> Update</button>
+                                                            <button class='btn btn-outline-danger' @click="deleteTag(tag)">Delete</button>
                                                             </div>
                                                         </div>
                                                         </div>

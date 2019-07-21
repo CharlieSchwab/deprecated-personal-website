@@ -4,8 +4,8 @@
       <div v-if="showExistingImage">
         <transition name="fadeOnShow">
           <div>
-            <img id="existingImage" v-bind:src="existingImagePath">
-            <a class='btn btn-light d-block pointer' @click='showExistingImage = false'>Update Image</a>
+            <img id = "existingImage" class='striped-bg' v-bind:src="existingImagePath">
+            <a class='btn update-btn d-block pointer' @click='showExistingImage = false'>Update Image</a>
           </div>
         </transition>
       </div>
@@ -28,7 +28,7 @@
         <!-- show image preview if file is not empty -->
         <transition name="fadeOnShow">
           <div v-if="file != ''">
-            <img id="imagePreview" src="#" alt="No File">
+            <img id="imagePreview" class='striped-bg' src="#" alt="No File">
             <!-- reset image file if given -->
             <div :style="{ 'width': maxPreviewSize + 'px' }" class="mx-auto">
               <a @click="resetImageUpload" class="btn btn-dark white-text d-block pointer">Reset Image</a>
@@ -55,7 +55,8 @@
 }
 
 #existingImage{
-  height:12em;
+  width: 100%;
+  height: 100%;
 }
 
 #imageUploadInputBox {
@@ -87,6 +88,24 @@
   cursor: pointer;
 }
 
+.striped-bg{
+  background: repeating-linear-gradient(
+    45deg,
+    #fcfcfc,
+    #fcfcfc 10px,
+    #f4f4f4 10px,
+    #f4f4f4 20px
+  )
+}
+
+.update-btn{
+  background-color: #f8fafc;
+  border-radius: 5px;
+}
+.update-btn:hover{
+  background-color: #dfe1e2;
+}
+
 #imagePreview {
   width: 100%;
   height: 100%;
@@ -96,14 +115,6 @@
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   object-fit: cover; /* auto-sizes the image size */
-
-  background: repeating-linear-gradient(
-    45deg,
-    #fcfcfc,
-    #fcfcfc 10px,
-    #f4f4f4 10px,
-    #f4f4f4 20px
-  );
 }
 </style>
 
