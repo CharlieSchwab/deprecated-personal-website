@@ -21,11 +21,11 @@
         <div>
             <div v-if="tag.icon_filepath != ''">
                 <!-- show existing file in image input sub-component and handle new image, if uploaded -->
-                <image-input ref="imageInput" imageInputLabelText='Upload New Tag Icon' imageInputElementName='icon' maxPreviewSize='300' :showExistingImage='true' :existingImagePath='tag.icon_filepath'></image-input>
+                <image-input ref="imageInput" imageInputLabelText='Upload New Tag Icon' imageInputElementName='icon' maxPreviewSize='300' :existingImagePath='tag.icon_filepath'></image-input>
             </div>
             <div v-else>
                 <!-- show an empty image input sub-component -->
-                <image-input ref="imageInput" imageInputLabelText='Upload Tag Icon' imageInputElementName='icon' maxPreviewSize='300'></image-input>
+                <image-input ref="imageInput" imageInputLabelText='Upload Tag Icon' imageInputElementName='icon' maxPreviewSize='300' :existingImagePath='""'></image-input>
             </div>
             <br>
         </div>

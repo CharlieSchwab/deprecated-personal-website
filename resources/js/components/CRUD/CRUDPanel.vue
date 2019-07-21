@@ -201,7 +201,7 @@
 
         //retreive data
         beforeMount(){
-          axios.get(CRUDEndpoints.tag.FETCH_URL).then(this.initializeTagData);
+          axios.get(CRUDEndpoints.tag.FETCH_URL).then(this.setTagData);
         },
 
 
@@ -212,7 +212,7 @@
             },
 
 
-            initializeTagData(response){
+            setTagData(response){
               this.tagData = response.data.tags;
             },
 
@@ -368,8 +368,9 @@
                     return;
                 }
 
-                //if success, then close modal and show notification
+                //if success, refresh data, then close modal and show notification
                 if (responseData.success) {
+                    axios.get(CRUDEndpoints.tag.FETCH_URL).then(this.setTagData);
                     this.closeCRUDModal();
                     this.showNotification("success", responseData.message);
                 } else {

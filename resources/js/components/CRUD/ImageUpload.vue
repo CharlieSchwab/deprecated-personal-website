@@ -10,6 +10,9 @@
         </transition>
       </div>
       <div v-else>
+        <div v-if="existingImagePath != ''">
+          <i class='pointer fa fa-undo float-right' @click='revertImageUpdate' data-toggle='tooltip' data-placement='right' title='Revert to Existing Image'></i>
+        </div>
         <!-- show input box if file is empty -->
         <transition name="fadeOnShow">
           <div id="imageUploadInputBox" v-if="file == ''">
@@ -125,15 +128,24 @@ export default {
     imageInputLabelText: String,
     imageInputElementName: String,
     maxPreviewSize: String,
-    showExistingImage: Boolean,
     existingImagePath: String
   },
   data() {
     return {
       fileUploadError: "",
       file: "", //stores the uploaded file
+      showExistingImage: false//do not show any 'existing image' by default
     };
   },
+
+  //after this component's creation (wait 1 tick) and check if existingImage path was passed in.
+  // if so, show existing image
+  created: function(){
+    this.$nextTick(function(){
+      if(this.existingImagePath != "") this.showExistingImage = true;
+    });
+  },
+
   methods: {
     //simple getters
     getImageInputElementName() {
@@ -149,6 +161,12 @@ export default {
       var reader = new FileReader();
       reader.onload = e => $("#imagePreview").attr("src", e.target.result);
       reader.readAsDataURL(file);
+    },
+
+    //revert to existing image
+    revertImageUpdate(){
+      this.file = "";
+      this.showExistingImage = true;
     },
 
     //reset uploaded image by resetting input value, component file attribute, and the image tag's src attribute
