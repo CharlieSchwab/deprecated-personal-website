@@ -20,6 +20,23 @@ class TagController extends Controller
     }
 
 
+    //helper function to handle file upload (used in both create/update operations)
+    //throws exception upwards
+    public static function storeFile($uploadedImage){
+        try{
+            //create unique filename using current timestamp, store into imageFolder
+            $imageName = $uploadedImage->getClientOriginalName();
+            $storageName = explode('.', $imageName)[0] . '-' . strval(time()) . '.' . explode('.', $imageName)[1];
+
+            $storedFileLocation = $uploadedImage->storeAs(TagController::$imageFolder, $storageName, 'public');
+            return $storedFileLocation;
+        }
+        catch(Exception $e){
+            throw $e;
+        }
+    }
+
+
     //Create a Tag
     public function createTag(Requests\CreateTagRequest $request){
         //return error if a tag with the given name already exists
@@ -31,21 +48,15 @@ class TagController extends Controller
         //assign entity attributes
         $tag = new Tag();
         $tag->name = $request->input('name');  
-        if(!is_null($request->input('type'))){
+        if($request->has('type')){
             $tag->type = $request->input('type');
         }
         $tag->show_on_homepage = ($request->input('show_on_homepage') == 'true');
 
-        //handle file upload if included in request
+        //handle file upload if included in request, handle exception thrown by helper method
         if($request->hasFile('icon')){
             try{
-                $uploadedImage = $request->file('icon');
-                //create unique filename using current timestamp, store into imageFolder
-                $imageName = $uploadedImage->getClientOriginalName();
-                $storageName = explode('.', $imageName)[0] . '-' . strval(time()) . '.' . explode('.', $imageName)[1];
-
-                $storedFile = $uploadedImage->storeAs(TagController::$imageFolder, $storageName, 'public');
-                $tag->icon_filepath = $storedFile;
+                $tag->icon_filepath = TagController::storeFile($request->file('icon'));
             }
             catch(Exception $e){
                 return response()->json(['success' => false, 'message' => 'Error on uploading image']);//return error response
@@ -65,10 +76,40 @@ class TagController extends Controller
     }
 
 
-    //TOOD...
+    //Update tag
     public function updateTag(Requests\UpdateTagRequest $request){
-        $tagToUpdate = Tag::find($request->input('id'));
-        dd($tagToUpdate);
+        $tag = Tag::find($request->input('id'));//tag to update
+        
+        //if tag does not exist in DB, return error
+        if(is_null($tag)) return response()->json([ 'success' => false, 'message' => 'The tag could not be found']);
+
+        //set tag data if it is new
+        if($tag->name != $request->input('name')) $tag->name = $request->input('name');
+        
+        if($request->has('type')){
+            if($tag->type != $request->input('type')) $tag->type = $request->input('type');
+        }
+        else $tag->type = "";//if blank value for type, set it to blank
+
+        $tag->show_on_homepage = ($request->input('show_on_homepage') == 'true');
+
+        //image file was uploaded
+        if($request->hasFile('icon')){
+            try{
+                //if a file already exists, delete the old file
+                if($tag->icon_filepath != ""){
+                    Storage::disk('public')->delete($tag->icon_filepath);
+                }
+                //save location of uploaded file
+                $tag->icon_filepath = TagController::storeFile($request->file('icon'));
+            }
+            catch(Exception $e){
+                return response()->json(['success' => false, 'message' => 'There was an issue with updating the image']);
+            }
+        }
+
+        $tag->save();
+        return response()->json(['success' => true, 'message' => 'The Tag "' . $tag->name . " was just updated"]);   
     }
 
 

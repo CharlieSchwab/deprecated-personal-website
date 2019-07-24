@@ -24,6 +24,7 @@ class UpdateTagRequest extends FormRequest
     public function rules()
     {
         return [
+            'id' => 'required',
             'name' => 'required',
             'type',
             'icon_filepath'
