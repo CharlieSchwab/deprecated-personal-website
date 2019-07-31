@@ -152,15 +152,12 @@ export default {
       return this.imageInputElementName;
     },
 
-    getUploadedFile() {
-      return this.file;
+    isUpdateOperation(){
+      return !this.showExistingImage;
     },
 
-    //set image src data
-    showUploadedImage(file) {
-      var reader = new FileReader();
-      reader.onload = e => $("#imagePreview").attr("src", e.target.result);
-      reader.readAsDataURL(file);
+    getUploadedFile() {
+      return this.file;
     },
 
     //revert to existing image
@@ -169,12 +166,20 @@ export default {
       this.showExistingImage = true;
     },
 
+    //set image src data once a image file is loaded
+    showUploadedImage(file) {
+      var reader = new FileReader();
+      reader.onload = e => $("#imagePreview").attr("src", e.target.result);
+      reader.readAsDataURL(file);
+    },
+
     //reset uploaded image by resetting input value, component file attribute, and the image tag's src attribute
     resetImageUpload() {
       $("#image-input").value = "";
       this.file = "";
       $("#imagePreview").attr("src", "");
     },
+
 
     //handle file input, used to filter file types and handle 'cancel' events
     handleFileUpload(e) {

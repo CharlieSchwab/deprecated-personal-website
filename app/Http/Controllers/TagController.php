@@ -51,7 +51,10 @@ class TagController extends Controller
         if($request->has('type')){
             $tag->type = $request->input('type');
         }
-        $tag->show_on_homepage = ($request->input('show_on_homepage') == 'true');
+
+        //if checkbox is selected, request parameter will come in, if checkbox is not checked, the request element will not exist
+        if($request->has('show_on_homepage')) $tag->show_on_homepage = true;
+        else $tag->show_on_homepage = false;
 
         //handle file upload if included in request, handle exception thrown by helper method
         if($request->hasFile('icon')){
@@ -91,20 +94,30 @@ class TagController extends Controller
         }
         else $tag->type = "";//if blank value for type, set it to blank
 
-        $tag->show_on_homepage = ($request->input('show_on_homepage') == 'true');
+        //if checkbox is selected, request parameter will come in, if checkbox is not checked, the request element will not exist
+        if($request->has('show_on_homepage')) $tag->show_on_homepage = true;
+        else $tag->show_on_homepage = false;
 
-        //image file was uploaded
+        //if image file was uploaded, update the image
         if($request->hasFile('icon')){
             try{
-                //if a file already exists, delete the old file
+                //if a image file already exists, delete existing file
                 if($tag->icon_filepath != ""){
                     Storage::disk('public')->delete($tag->icon_filepath);
                 }
-                //save location of uploaded file
+                //save location of new uploaded file
                 $tag->icon_filepath = TagController::storeFile($request->file('icon'));
             }
             catch(Exception $e){
                 return response()->json(['success' => false, 'message' => 'There was an issue with updating the image']);
+            }
+        }
+
+        //if user wants to remove the image altogether, delete image and set icon_filepath to empty string
+        if($request->has('delete_existing_image')){
+            if($tag->icon_filepath != null){
+                Storage::disk('public')->delete($tag->icon_filepath);
+                $tag->icon_filepath = "";
             }
         }
 

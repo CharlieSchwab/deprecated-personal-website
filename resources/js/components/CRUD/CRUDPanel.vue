@@ -221,14 +221,13 @@
                 //if a data object is currently selected, prefill the form with the object's corresponding data
                 if (this.selectedDataObject != "") {
                     this.$refs.CRUDForm.setFormData(this.selectedDataObject);
-
-                    //if the form loaded is a delete operation, disable all inputs
-                    if(this.isDeleteOperation){
-                        $('#' + this.formID + " input").prop('disabled', true);
-                    }
                 }
                 //IMPORTANT: the modal will only be shown after the dynamic vue object has been mounted
                 $(CRUD_MODAL_ID).modal();
+                //if the form loaded is a delete operation, disable all inputs
+                if(this.isDeleteOperation){
+                    $('#' + this.formID + " input").prop('disabled', true);
+                }
             },
 
 

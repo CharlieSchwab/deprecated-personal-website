@@ -96,8 +96,17 @@
 
                 //add image to formdata using sub-component's functions, if any image was uploaded
                 var uploadedImage = this.$refs.imageInput;
+
+                //if uploaded image file exists in vue subcomponent, then add it to the request
                 if(uploadedImage.getUploadedFile() != ""){
                     formData.append(uploadedImage.getImageInputElementName(), uploadedImage.getUploadedFile());
+                }
+                //if no image file exists in sub-component, 
+                else{
+                    //AND if the user selected to update the image (they left it blank, means delete)
+                    if(uploadedImage.isUpdateOperation()){
+                        formData.append('delete_existing_image', true);//set flag to remove image
+                    }
                 }
 
                 return formData;                      
