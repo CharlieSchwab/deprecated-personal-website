@@ -115,9 +115,14 @@ class TagController extends Controller
 
         //if user wants to remove the image altogether, delete image and set icon_filepath to empty string
         if($request->has('delete_existing_image')){
-            if($tag->icon_filepath != null){
-                Storage::disk('public')->delete($tag->icon_filepath);
-                $tag->icon_filepath = "";
+            try{
+                if($tag->icon_filepath != null){
+                    Storage::disk('public')->delete($tag->icon_filepath);
+                    $tag->icon_filepath = "";
+                }
+            }
+            catch(Exception $e){
+                return response()->json(['success' => false, 'message' => 'There was an issue with removing the image']);
             }
         }
 

@@ -75,12 +75,15 @@
                 class="alert no-margins"
                 :class='{ "alert-danger": notificationType == "error", "alert-success": notificationType == "success"}'
             >
-                <p class="text-center no-margins">{{ notificationMessage }}</p>
+                <p class="text-center no-margins">
+                    {{ notificationMessage }}
+                    <i class='fa fa-times-circle fa-2x pointer float-right' @click="this.resetNotification"></i>
+                </p>
             </div>
         </transition>
         <!-- CRUD Panel Page, shows data and contains trigger buttons -->
         <br />
-        <div class="row">
+        <div class="row no-margins">
             <div class="col-md-10 mx-auto">
                 <div class="card rounded-edges padded">
                     <div class="card-body">
@@ -224,9 +227,10 @@
                 }
                 //IMPORTANT: the modal will only be shown after the dynamic vue object has been mounted
                 $(CRUD_MODAL_ID).modal();
-                //if the form loaded is a delete operation, disable all inputs
+                //if the form loaded is a delete operation, disable all inputs, including the subcomponent for image upload
                 if(this.isDeleteOperation){
                     $('#' + this.formID + " input").prop('disabled', true);
+                    $('#imageUploadComponent').css('pointer-events', 'none');
                 }
             },
 

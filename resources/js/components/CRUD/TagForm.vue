@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <div>
+        <div id="imageUploadComponent">
             <div v-if="tag.icon_filepath != ''">
                 <!-- show existing file in image input sub-component and handle new image, if uploaded -->
                 <image-input ref="imageInput" imageInputLabelText='Upload New Tag Icon' imageInputElementName='icon' maxPreviewSize='300' :existingImagePath='tag.icon_filepath'></image-input>
@@ -103,7 +103,7 @@
                 }
                 //if no image file exists in sub-component, 
                 else{
-                    //AND if the user selected to update the image (they left it blank, means delete)
+                    //AND if the user selected to update the image (they left it blank, means delete the old image)
                     if(uploadedImage.isUpdateOperation()){
                         formData.append('delete_existing_image', true);//set flag to remove image
                     }
