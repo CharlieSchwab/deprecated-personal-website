@@ -230,7 +230,7 @@
                 //if the form loaded is a delete operation, disable all inputs, including the subcomponent for image upload
                 if(this.isDeleteOperation){
                     $('#' + this.formID + " input").prop('disabled', true);
-                    $('#imageUploadComponent').css('pointer-events', 'none');
+                    $('#imageUpload').css('pointer-events', 'none');
                 }
             },
 
