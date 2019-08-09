@@ -3,8 +3,18 @@
     <div id="CRUDModal" class="modal fade" data-backdrop="static" data-keyboard="false">
         <div class='modal-dialog'>
             <div class='modal-content'>
-                <form :id="formID" enctype="multipart/form-data">
-                    
+                <form enctype="multipart/form-data">
+                    <div class="modal-header alt-bg">
+                        <h4 class="modal-title">
+                            <b>{{ modalTitle }}</b>
+                        </h4>
+                        <button @click="closeCRUDModal()" type='button' class='close'>
+                            <i class='fa fa-times-circle'></i>
+                        </button>
+                    </div>
+                    <div class='modal-body'>
+                        
+                    </div>
                 </form>
             </div>
         </div>

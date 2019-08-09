@@ -1,3 +1,43 @@
+<!--    NOTE: this was the inital way dynamic CRUD operations were controlled
+        resulted in a very long file (400 + lines) 
+        also involved using $refs which is not recommended
+        This file is slated for deletion
+
+        This CRUDPanel vue component will be replaced by 2 vue components (a View, and a Controller)
+        In this breakdown, the specific forms (ex. TagForm, ProjectForm) will be the "Models" used by
+        the Controller
+
+        Controller is the Modal element (pop-up)
+        It will use a dynamically loaded sub-component for its form/model
+        It will rely on props to set values like:
+            Modal title, Button title, operation type, etc
+            These props will be fed in by the "View" component, which will store the values of the props 
+            in its own variables 
+            (so from the view, operation type can be changed, the prop change event will then go to the 
+            Controller, which can set up the  )
+        
+        
+        View is just the Admin Dashboard page
+        It will fetch all data from the backend on loading the page and display it in list/grid form
+        It will contain an instance of the Controller
+
+        Flow of events:
+        Based on user input, (ex. Button click), The view will update the value of a prop that is fed 
+        into the controller subcomponent. The Controller will be watching for this prop change event, and 
+        on observing a value change, the Controller will set up the appropriate form and pre-load with data
+        (if required). On loading its specific form sub-component, the Controller will display the pop-up
+
+        Operations will be set up/executed by the Controller, and on completing the action (success/failure),
+        an event will be fired to its parent view, which can then show the notifications/refresh data
+
+
+        Models:
+        Form components (ex. TagForm, ProjectForm) will just be updated so that they do not "return" values
+        for validation. instead validation should be indicated by a simple computed value in the form
+        (isValid = true/false)
+
+-->
+
 <template>
     <div id="CRUDPanel">
         <!-- CRUD Modal, where form data is entered and submitted -->
