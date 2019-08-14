@@ -14,7 +14,8 @@
             These props will be fed in by the "View" component, which will store the values of the props 
             in its own variables 
             (so from the view, operation type can be changed, the prop change event will then go to the 
-            Controller, which can set up the  )
+            Controller, which can set up the appropriate form and load any data in, then show the modal)
+            
         
         
         View is just the Admin Dashboard page
