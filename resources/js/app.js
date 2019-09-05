@@ -45,12 +45,12 @@ window.onload = function () {
     }
     else if (currentPage == DASHBOARD) {
 
-        var CRUDPanel = require('./components/CRUD/CRUDPanel.vue').default;
+        var CRUDView = require('./components/CRUD/CRUDView.vue');
 
         app = new Vue({
             el: '#app',
             components: {
-                'crud-panel': CRUDPanel
+                'crud-view': CRUDView
             }
         });
     }

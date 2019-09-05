@@ -7,7 +7,7 @@
 @stop
 
 @section('body')
-    <crud-panel></crud-panel>
+    <crud-view></crud-view>
     <br>
 @stop
 
