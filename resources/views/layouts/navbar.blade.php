@@ -17,7 +17,7 @@
                  <a id='nav-home-link' class="nav-link" href="/">Home</a>
              </li>
              <li class="nav-item">
-                 <a id='nav-all-projects-link' class="nav-link" href="/all-projects">All Projects</a>
+                 <a id='nav-all-projects-link' class="nav-link" href="/how-it-works">How this Website Works</a>
              </li>
          </ul>
          @if (Auth::check())

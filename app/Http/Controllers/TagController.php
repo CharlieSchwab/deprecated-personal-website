@@ -52,9 +52,8 @@ class TagController extends Controller
             $tag->type = $request->input('type');
         }
 
-        //if checkbox is selected, request parameter will come in, if checkbox is not checked, the request element will not exist
-        if($request->has('show_on_homepage')) $tag->show_on_homepage = true;
-        else $tag->show_on_homepage = false;
+        //if checkbox is selected, request parameter will come in, if checkbox is not checked, the request element will not exist (false = don't show on homepage)
+        $tag->show_on_homepage = $request->has('show_on_homepage');
 
         //handle file upload if included in request, handle exception thrown by helper method
         if($request->hasFile('icon')){
@@ -95,8 +94,7 @@ class TagController extends Controller
         else $tag->type = "";//if blank value for type, set it to blank
 
         //if checkbox is selected, request parameter will come in, if checkbox is not checked, the request element will not exist
-        if($request->has('show_on_homepage')) $tag->show_on_homepage = true;
-        else $tag->show_on_homepage = false;
+        $tag->show_on_homepage = $request->has('show_on_homepage');
 
         //if image file was uploaded, update the image
         if($request->hasFile('icon')){
