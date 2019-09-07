@@ -12,7 +12,7 @@ window.Vue = require('vue');
 
 const HOMEPAGE = "/";
 const DASHBOARD = "/dashboard";
-const ALLPROJECTS = "/allprojects";
+const DEMOVIDEO = "/how-it-works";
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -23,20 +23,18 @@ const ALLPROJECTS = "/allprojects";
 window.onload = function () {
     var currentPage = window.location.pathname;
     var app;
+    var pathToComponent;
 
     //DID NOT WANT TO USE VUE ROUTER, so settled for simple if-stmts to load specific components for specific pages
     if (currentPage == HOMEPAGE) {
-
-        var heroUnit = require('./components/HomePage/HeroUnit.vue').default;
-        var portfolioUnit = require('./components/HomePage/PortfolioUnit.vue').default;
-        var skillsRow = require('./components/HomePage/SkillsRow.vue').default;
+        pathToComponent = './components/HomePage/';
 
         app = new Vue({
             el: '#app',
             components: {
-                'hero-unit': heroUnit,
-                'portfolio-unit': portfolioUnit,
-                'skills-row': skillsRow
+                'hero-unit': () => import(pathToComponent + 'HeroUnit.vue'),
+                'portfolio-unit': () => import(pathToComponent + 'PortfolioUnit.vue'),
+                'skills-row': () => import(pathToComponent + 'SkillsRow.vue')
             },
             data: {
                 imagesDoneLoading: false
@@ -44,17 +42,16 @@ window.onload = function () {
         });
     }
     else if (currentPage == DASHBOARD) {
-
-        var CRUDView = require('./components/CRUD/CRUDView.vue');
+        pathToComponent = './components/CRUD/';
 
         app = new Vue({
             el: '#app',
             components: {
-                'crud-view': CRUDView
+                'crud-view': () => import(pathToComponent + 'CRUDView.vue')
             }
         });
     }
-    else if (currentPage == ALLPROJECTS) {
+    else if (currentPage == DEMOVIDEO) {
         //TODO
     }
     else {

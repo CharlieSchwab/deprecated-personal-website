@@ -21,7 +21,7 @@
               </h4>
               <!-- all skills used for this project -->
               <span v-for='skill in project.skills_used'
-                  class='badge badge-pill alt-bg skills-for-project spaced-min'>
+                  class='badge badge-pill alt-bg tag-font spaced-min'>
                   {{skill}}
               </span>
             </div>            
@@ -41,13 +41,6 @@
   </div>
 </template>
 
-<style>
-  .skills-for-project {
-    font-size: 16px !important;
-    color: #505050;
-    cursor:pointer;
-  }
-</style>
 
 <script>
     import projects_json from '../json/portfolio.json';
