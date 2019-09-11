@@ -158,6 +158,11 @@ footer{
   background-color: $main-theme;
 }
 
+
+.navbar-bg{
+  background: linear-gradient(0deg, #9aebdb 35%, #36d7b7 100%);
+}
+
 .small-logo{
   width:35px;
   height:35px;
@@ -265,6 +270,13 @@ footer{
   position: absolute;
   background: rgb(54,215,183);
   background: linear-gradient(0deg, rgba(54,215,183,1) 35%, rgba(154,235,219,1) 100%);
+
+  //UII GRADIENT --> really nice gradients can use later --> https://uigradients.com/#Tranquil
+  /*
+  background: #EECDA3;
+  background: -webkit-linear-gradient(to bottom, #EF629F, #EECDA3); 
+  background: linear-gradient(to bottom, #EF629F, #EECDA3);
+  */
   width: 100%;
   height: 24em;
 
@@ -295,4 +307,13 @@ footer{
 }
 
 
-//DASHBOARD CSS
+.demo-video{
+  height: 50em;
+
+  @media(max-width: #{$hero-breakpoint-md}){
+    height:25em !important;
+  }
+  @media(max-width: #{$hero-breakpoint-xs}){
+    height:20em !important;
+  }
+}

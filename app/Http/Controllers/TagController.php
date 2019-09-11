@@ -52,7 +52,7 @@ class TagController extends Controller
             $tag->type = $request->input('type');
         }
 
-        //if checkbox is selected, request parameter will come in, if checkbox is not checked, the request element will not exist (false = don't show on homepage)
+        //if checkbox is selected, request parameter will come in, if checkbox is not checked, the request element will not exist
         $tag->show_on_homepage = $request->has('show_on_homepage');
 
         //handle file upload if included in request, handle exception thrown by helper method

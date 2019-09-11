@@ -23,6 +23,18 @@
 </div>
 <portfolio-unit></portfolio-unit>
 <br>
+<div class = 'd-flex flex-column'>
+  <div class='container'>
+    <h3>
+      <i class='fas fa-laptop-code'></i> <b>How this Website Works</b>
+    </h3>
+  </div>
+  <br>
+  <video class='demo-video' playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
+    <source src="https://storage.googleapis.com/coverr-main/mp4/Mt_Baker.mp4" type="video/mp4">
+  </video>
+</div>
+<br>
 @stop
 
 @section('scripts')

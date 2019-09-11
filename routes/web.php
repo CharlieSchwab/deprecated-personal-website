@@ -13,7 +13,6 @@
 */
 \
 Route::get('/', 'ViewController@showHomePage');
-Route::get('/how-it-works', 'ViewController@showDemoVideoPage');
 Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
 
 //only allow access to login if connected to the DB via the connected middleware

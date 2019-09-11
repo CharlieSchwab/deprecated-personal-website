@@ -88,7 +88,7 @@
                             ></component>
 
                             <!--spinner-->
-                            <div id="spinner-container">
+                            <div id="spinner-container" style="display:none">
                                 <br />
                                 <div id="loading" class="d-block mx-auto"></div>
                             </div>
@@ -187,12 +187,6 @@
         </div>
     </div>
 </template>
-
-<style>
-    #spinner-container {
-        display: none;
-    }
-</style>
 
 <script>
     import Vue from 'vue';

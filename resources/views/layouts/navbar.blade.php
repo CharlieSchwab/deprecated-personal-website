@@ -1,24 +1,18 @@
- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+ <nav class="navbar navbar-expand-lg navbar-bg">
      <a class="navbar-brand" href="/">
          <img src="/assets/logos/logo.png" class='small-logo' alt="">
      </a>
-     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
          <span class="navbar-toggler-icon"></span>
      </button>
 
-     <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+     <div class="collapse navbar-collapse" id="navbar-content">
          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
              @if (Auth::check())
             <li class='nav-item'>
                 <a id='nav-dashboard-link' class='nav-link' href='/dashboard'>Admin Dashboard</a>
             </li>
              @endif
-             <li class="nav-item">
-                 <a id='nav-home-link' class="nav-link" href="/">Home</a>
-             </li>
-             <li class="nav-item">
-                 <a id='nav-all-projects-link' class="nav-link" href="/how-it-works">How this Website Works</a>
-             </li>
          </ul>
          @if (Auth::check())
          <ul class='my-2 my-lg-0'>
