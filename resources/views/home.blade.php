@@ -18,7 +18,6 @@
       <i class='fas fa-tools'></i> <b>Frameworks/Tools</b>
     </h3>
   </div>
-
   <skills-row></skills-row>
 </div>
 <portfolio-unit></portfolio-unit>
