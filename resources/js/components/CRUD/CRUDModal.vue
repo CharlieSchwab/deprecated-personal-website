@@ -34,7 +34,7 @@
                         </transition>
                         <br />
                         <!-- form content, dyanamic subcomponent, pass in data, if it exists-->
-                        <component v-bind:is="currentModalForm" :dataObject ="selectedDataObject"/>
+                        <component v-bind:is="currentModalForm" :dataObject ="selectedDataObject" v-on:mounted="subFormMounted"/>
 
                         <!--spinner-->
                         <div id="spinner-container">
@@ -89,6 +89,11 @@
         methods: {
             closeCRUDModal(){
                 this.$emit('closeCRUDModal');
+            },
+
+            //function that will be called when the dynamic form component is mounted
+            subFormMounted(){
+                console.log('e');
             },
 
             submitCRUDOperation() {
