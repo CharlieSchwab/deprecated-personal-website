@@ -1,6 +1,7 @@
 # Personal Website - Laravel 5.8 with VueJS
 
-This is a personal website to show my projects.
+- abandoned project, replaced by personal-website.
+- this project still has many re-usable vue components which could be of use (ex. imageUpload)
 
 Uses simple CRUD operations to showcase "projects" and link them with "tags" (ex. language/framework/etc)
 
